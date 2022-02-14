@@ -4,21 +4,21 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: '/folder/login'
+    redirect: '/login'
   },
  /* {
     path: '/folder/:id',
     component: () => import ('../views/Folder.vue')
   },*/
   {
-    path: '/folder/Inicio',
-    component: () => import ('../views/inicio.vue'),
-    meta:{title:'Inicio'},
-  },
-  {
     path: '/login',
     component: () => import ('../views/login.vue'),
     meta:{title:'Login'},
+  },
+  {
+    path: '/folder/Inicio',
+    component: () => import ('../views/inicio.vue'),
+    meta:{title:'Inicio'},
   },
   {
     path: '/folder/Usuario',
@@ -55,11 +55,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../views/ayuda.vue'),
     meta:{title:'Ayuda'}
   },
-  {
-    path: '/folder/Login',
-    component: () => import ('../views/login.vue'),
-    meta:{title:'Login', /*requiresAuth: true*/}
-  }
 ]
 
 const router = createRouter({

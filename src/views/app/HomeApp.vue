@@ -1,35 +1,33 @@
 <template>
   <IonApp>
     <IonSplitPane content-id="main-content">
-    <ion-menu content-id="main-content" type="overlay" v-show="$route.meta.showMenu">
+      <ion-menu content-id="main-content" type="overlay">
         <ion-content>
 
-        <ion-list id="BeFit-list">
-          <ion-list-header>BeFit</ion-list-header>
+          <ion-list id="BeFit-list">
+            <ion-list-header>BeFit</ion-list-header>
 
-          <ion-note></ion-note>
+            <ion-note></ion-note>
 
-          <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
-            <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
-              <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+            <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
+              <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
+                <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
 
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+          <!--  <ion-list id="labels-list">
+              <ion-list-header></ion-list-header>
 
-               <!--  <ion-list id="labels-list">
-                   <ion-list-header></ion-list-header>
-
-                   <ion-item v-for="(label, index) in labels" lines="none" :key="index">
-                     <ion-icon  :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
-                     <ion-label>{{ label }}</ion-label>
-                   </ion-item>
-                 </ion-list>-->
-
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
+              <ion-item v-for="(label, index) in labels" lines="none" :key="index">
+                <ion-icon  :ios="bookmarkOutline" :md="bookmarkSharp"></ion-icon>
+                <ion-label>{{ label }}</ion-label>
+              </ion-item>
+            </ion-list>-->
+        </ion-content>
+      </ion-menu>
+      <ion-router-outlet id="main-content"></ion-router-outlet>
     </IonSplitPane>
   </IonApp>
 </template>
@@ -219,7 +217,7 @@ ion-menu.md ion-item ion-label { /*boton tambien?*/
 
 ion-menu.md ion-item.selected ion-label { /*boton tambien?*/
   font-weight: 500;
-   color: #ffffff;
+  color: #ffffff;
 }
 
 ion-menu.ios ion-content {
@@ -256,7 +254,7 @@ ion-menu.ios ion-item ion-icon {
 
 ion-menu.ios ion-list#labels-list ion-list-header {
   margin-bottom: 8px;
-   --background: var(--ion-item-background, var(--ion-background-color,  rgb(166, 228, 157)));
+  --background: var(--ion-item-background, var(--ion-background-color,  rgb(166, 228, 157)));
 }
 
 ion-menu.ios ion-list-header,
