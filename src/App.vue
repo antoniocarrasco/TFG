@@ -18,7 +18,7 @@
           </ion-menu-toggle>
         </ion-list>
 
-               <!--  <ion-list id="labels-list">
+                <!--<ion-list id="labels-list">
                    <ion-list-header></ion-list-header>
 
                    <ion-item v-for="(label, index) in labels" lines="none" :key="index">
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
+import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane} from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { grid, nutrition, bookmarkOutline, bookmarkSharp, barChart, accessibility, analytics, calendar, help, funnel, build } from 'ionicons/icons';
@@ -105,6 +105,12 @@ export default defineComponent({
       {
         title: 'Ayuda',
         url: '/folder/Ayuda',
+        iosIcon: help,
+        mdIcon: help
+      },
+      {
+        title: 'Login',
+        url: '/folder/login',
         iosIcon: help,
         mdIcon: help
       }

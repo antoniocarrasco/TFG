@@ -12,33 +12,52 @@ const routes: Array<RouteRecordRaw> = [
   },*/
   {
     path: '/login',
-    component: () => import ('../views/login.vue'),
-    meta:{title:'Login'},
+    component: () => import ('../views/auth/login.vue'),
+    meta:{
+      title:'Login',
+      showMenu: false
+    },
+  },
+  {
+    path: '/register',
+    component: () => import ('../views/auth/register.vue'),
+    meta:{
+      title:'Registro',
+      showMenu: false
+    }
   },
   {
     path: '/folder/Inicio',
     component: () => import ('../views/inicio.vue'),
-    meta:{title:'Inicio'},
+    meta:{
+      title:'Inicio',
+      showMenu: true
+    },
   },
   {
     path: '/folder/Usuario',
     component: () => import ('../views/usuario.vue'),
-    meta:{title:'Usuario'}
+    meta:{
+      title:'Usuario',
+      showMenu: true
+    }
   },
   {
     path: '/folder/Progreso',
     component: () => import ('../views/progreso.vue'),
-    meta:{title:'Progreso'}
+    meta:{
+      title:'Progreso',
+      showMenu: true
+    }
   },
-  {
-    path: '/folder/Registro',
-    component: () => import ('../views/registro.vue'),
-    meta:{title:'Registro'}
-  },
+
   {
     path: '/folder/Recetas',
     component: () => import ('../views/recetas.vue'),
-    meta:{title:'Recetas'}
+    meta:{
+      title:'Recetas',
+      showMenu: true
+    }
   },
   {
     path: '/folder/MenuSemanal',
@@ -48,12 +67,18 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/folder/Ajustes',
     component: () => import ('../views/ajustes.vue'),
-    meta:{title:'Ajustes'}
+    meta:{
+      title:'Ajustes',
+      showMenu: true
+    }
   },
   {
     path: '/folder/Ayuda',
     component: () => import ('../views/ayuda.vue'),
-    meta:{title:'Ayuda'}
+    meta:{
+      title:'Ayuda',
+      showMenu: true
+    }
   },
 ]
 
