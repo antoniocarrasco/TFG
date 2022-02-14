@@ -1,0 +1,8 @@
+{
+  "name": "TFG",
+  "integrations": {
+    "capacitor": {}
+      },
+  "type": "vue"
+  
+}
