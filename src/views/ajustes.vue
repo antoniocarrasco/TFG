@@ -17,7 +17,12 @@
       </ion-header>
     
       <div id="container">
-        
+        <ion-toolbar>
+        <ion-buttons>
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>New Item</ion-title>
+      </ion-toolbar>
       </div>
     </ion-content>
   </ion-page>

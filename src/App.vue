@@ -107,12 +107,6 @@ export default defineComponent({
         url: '/folder/Ayuda',
         iosIcon: help,
         mdIcon: help
-      },
-      {
-        title: 'Login',
-        url: '/folder/login',
-        iosIcon: help,
-        mdIcon: help
       }
     ];
 
