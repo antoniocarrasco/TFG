@@ -46,6 +46,7 @@ export default defineComponent({
     login(){
       //Validate fields
       console.log("login", this.email, this.password)
+
     }
   }
 });

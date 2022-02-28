@@ -3,10 +3,7 @@ import App from './App.vue'
 import router from './router';
 
 
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-
+import firebase from 'firebase/compat/app';
 
 import { IonicVue } from '@ionic/vue';
 
@@ -55,7 +52,7 @@ firebase.initializeApp(firebaseConfig);
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
-  
+
 
 // Initialize Firebase
 /*const app1 = initializeApp(firebaseConfig);
