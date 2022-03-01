@@ -33,6 +33,7 @@
 <script lang="ts">
 import { IonLabel, IonInput, IonItem, IonContent, IonButton, IonHeader, IonTitle, IonToolbar,IonPage} from '@ionic/vue';
 import { defineComponent } from 'vue';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default defineComponent({
   components: { IonLabel, IonInput, IonItem,IonContent,IonButton,IonHeader,IonTitle,IonToolbar,IonPage},
@@ -46,6 +47,22 @@ export default defineComponent({
     login(){
       //Validate fields
       console.log("login", this.email, this.password)
+
+
+      
+
+const auth = getAuth();
+signInWithEmailAndPassword(auth, this.email, this.password)
+  .then((userCredential) => {
+    // Signed in
+    const user = userCredential.user;
+    console.log("User logeado")
+    
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
 
     }
   }
