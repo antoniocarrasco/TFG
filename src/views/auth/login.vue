@@ -25,6 +25,11 @@
         </ion-item>
 
         <ion-button expand="block" @click="login">Login</ion-button>
+
+        <p>
+                 <ion-item router-link ="/register"> No estoy registrado. </ion-item>
+        </p>
+        
       </div>
     </ion-content>
   </ion-page>
@@ -49,14 +54,18 @@ export default defineComponent({
       console.log("login", this.email, this.password)
 
 
-      
-
+ 
 const auth = getAuth();
+
+
+
+
 signInWithEmailAndPassword(auth, this.email, this.password)
   .then((userCredential) => {
     // Signed in
     const user = userCredential.user;
-    console.log("User logeado")
+    console.log("User logeado");
+    
     
   })
   .catch((error) => {

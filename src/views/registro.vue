@@ -5,19 +5,23 @@
         <ion-buttons slot ="start">
           <ion-menu-button color="primary"></ion-menu-button> 
         </ion-buttons>
-        <ion-title>{{ $route.params.id }} </ion-title>
+        <ion-title>{{ $route.meta.title }} </ion-title>
       </ion-toolbar>
     </ion-header>
     
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">{{ $route.params.id }}</ion-title>
+          <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
     
       <div id="container">
-        
+        <ion-item>Calorias semanales</ion-item>
+        <ion-item>Calorias diarias (enlace a calorias diarias)</ion-item>
+        <h2>-</h2>
+        <ion-item>GRAFICO CALORIAS SEMANALES/DIARIAS</ion-item>
+
       </div>
     </ion-content>
   </ion-page>

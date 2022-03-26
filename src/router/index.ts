@@ -60,15 +60,23 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/folder/MenuSemanal',
+    path: '/folder/Menusemanal',
     component: () => import ('../views/menusemanal.vue'),
-    meta:{title:'Menu Semanal'}
+    meta:{title:'Menu Semanal',showMenu: true}
   },
   {
     path: '/folder/Ajustes',
     component: () => import ('../views/ajustes.vue'),
     meta:{
       title:'Ajustes',
+      showMenu: true
+    }
+  },
+  {
+    path: '/folder/registro',
+    component: () => import ('../views/registro.vue'),
+    meta:{
+      title:'Registro',
       showMenu: true
     }
   },

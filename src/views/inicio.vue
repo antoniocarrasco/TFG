@@ -5,7 +5,7 @@
         <ion-buttons slot ="start">
           <ion-menu-button color="primary"></ion-menu-button> 
         </ion-buttons>
-        <ion-title  >{{ $route.meta.title }} </ion-title>
+        <ion-title>{{ $route.meta.title }} </ion-title>
       </ion-toolbar>
     </ion-header>
     
@@ -17,7 +17,12 @@
       </ion-header>
     
       <div id="container">
-        
+        <ion-item>GRAFICO PROGRESO DIARIO-OBJETIVO</ion-item>
+        <h2 expand="full"> - </h2>
+        <ion-item>Añadir calorias de comidas</ion-item>
+        <ion-item>Añadir calorias gastadas</ion-item>
+        <ion-item>KCAL Objetivo</ion-item>
+        <ion-item>KCAL Actuales</ion-item>
       </div>
     </ion-content>
   </ion-page>

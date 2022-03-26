@@ -17,7 +17,17 @@
       </ion-header>
     
       <div id="container">
+       
+          <ion-title size="large">Progreso de peso</ion-title>
         
+        <ion-item>Peso actual</ion-item>
+         <ion-item>Peso objetivo</ion-item>
+          <ion-item>
+            <ion-label position="floating">Introducir peso</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <h2>-</h2>
+          <ion-item>GRAFICO BAJADA DE PESO</ion-item>
       </div>
     </ion-content>
   </ion-page>

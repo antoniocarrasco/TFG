@@ -16,13 +16,46 @@
       <div id="container">
         <ion-item>
           <ion-label position="floating">Email</ion-label>
-          <ion-input v-model="email"></ion-input>
+          <ion-input v-model="email" type="email"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Password</ion-label>
           <ion-input type="password" v-model="password"></ion-input>
         </ion-item>
+
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Sexo</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Peso(kg)</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Altura(cm)</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Edad</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Nivel de actividad fisica</ion-label>
+            <ion-input type="NivelAct" v-model="password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Objetivo</ion-label>
+            <ion-input type="Objetivo" v-model="Objetivo"></ion-input>
+          </ion-item>
+        
+          
+        </ion-list>
 
         <ion-button expand="block" @click="register">Registro</ion-button>
       </div>

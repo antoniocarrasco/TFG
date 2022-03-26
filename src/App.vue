@@ -13,7 +13,6 @@
             <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
               <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
-
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
@@ -39,6 +38,7 @@ import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader,
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { grid, nutrition, bookmarkOutline, bookmarkSharp, barChart, accessibility, analytics, calendar, help, funnel, build } from 'ionicons/icons';
+
 
 export default defineComponent({
   name: 'App',
@@ -80,7 +80,7 @@ export default defineComponent({
       },
       {
         title: 'Registro',
-        url: '/folder/Registro',
+        url: '/folder/registro',
         iosIcon: barChart,
         mdIcon: barChart
       },
@@ -91,8 +91,8 @@ export default defineComponent({
         mdIcon: nutrition
       },
       {
-        title: 'Menu semanal',
-        url: '/folder/MenuSemanal',
+        title: 'Menu Semanal',
+        url: '/folder/menusemanal',
         iosIcon: calendar,
         mdIcon: calendar
       },

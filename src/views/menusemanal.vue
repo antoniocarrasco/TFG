@@ -17,7 +17,15 @@
       </ion-header>
     
       <div id="container">
-        
+        <ion-list>SEMANA</ion-list>
+        <ion-item>LUNES</ion-item>
+        <ion-item>MARTES</ion-item>
+        <ion-item>MIERCOLES</ion-item>
+        <ion-item>JUEVES</ion-item>
+        <ion-item>VIERNES</ion-item>
+        <ion-item>SABADO</ion-item>
+        <ion-item>DOMINGO</ion-item>
+        <H6>LINK A CADA DIA</H6>   
       </div>
     </ion-content>
   </ion-page>

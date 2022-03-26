@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-buttons >
+        <ion-buttons slot ="start">
           <ion-menu-button color="primary"></ion-menu-button> 
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
@@ -17,12 +17,7 @@
       </ion-header>
     
       <div id="container">
-        <ion-toolbar>
-        <ion-buttons>
-          <ion-back-button></ion-back-button>
-        </ion-buttons>
-        <ion-title>New Item</ion-title>
-      </ion-toolbar>
+        
       </div>
     </ion-content>
   </ion-page>

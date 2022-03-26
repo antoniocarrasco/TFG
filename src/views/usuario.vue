@@ -5,7 +5,7 @@
         <ion-buttons slot ="start">
           <ion-menu-button color="primary"></ion-menu-button> 
         </ion-buttons>
-        <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-title>{{ $route.meta.title }} </ion-title>      
       </ion-toolbar>
     </ion-header>
     
@@ -15,9 +15,40 @@
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-    
-      <div id="container">
+      <div expand = "full" id="container"> 
+        <ion-title>Datos personales</ion-title> 
+         <ion-list>
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Sexo</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Peso(kg)</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Altura(cm)</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Edad</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Nivel de actividad fisica</ion-label>
+            <ion-input type="NivelAct" v-model="password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Objetivo</ion-label>
+            <ion-input type="Objetivo" v-model="Objetivo"></ion-input>
+          </ion-item>
         
+          
+        </ion-list>
       </div>
     </ion-content>
   </ion-page>

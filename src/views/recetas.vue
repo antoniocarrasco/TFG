@@ -17,7 +17,8 @@
       </ion-header>
     
       <div id="container">
-        
+        <ion-item>RECETAS PROPIAS (LINK PAGINA)</ion-item>
+        <ion-item>RECETAS BIFIT(LINK PAGINA)</ion-item>
       </div>
     </ion-content>
   </ion-page>
