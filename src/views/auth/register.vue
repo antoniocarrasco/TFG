@@ -27,34 +27,35 @@
         <ion-list>
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
-            <ion-input ></ion-input>
+            <ion-input v-model="name"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Sexo</ion-label>
-            <ion-input ></ion-input>
+            <ion-select v-model="sex" placeholder="Select One">
+              <ion-select-option value="M">Mujer</ion-select-option>
+              <ion-select-option value="H">Hombre</ion-select-option>
+            </ion-select>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Peso(kg)</ion-label>
-            <ion-input ></ion-input>
+            <ion-input v-model="currentWeight"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Altura(cm)</ion-label>
-            <ion-input ></ion-input>
+            <ion-input v-model="high"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Edad</ion-label>
-            <ion-input ></ion-input>
+            <ion-input v-model="age"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Nivel de actividad fisica</ion-label>
-            <ion-input type="NivelAct" v-model="password"></ion-input>
+            <ion-select v-model="level" placeholder="Select One">
+              <ion-select-option value="A">Alto</ion-select-option>
+              <ion-select-option value="M">Medio</ion-select-option>
+              <ion-select-option value="B">Bajo</ion-select-option>
+            </ion-select>
           </ion-item>
-          <ion-item>
-            <ion-label position="floating">Objetivo</ion-label>
-            <ion-input type="Objetivo" v-model="Objetivo"></ion-input>
-          </ion-item>
-        
-          
         </ion-list>
 
         <ion-button expand="block" @click="register">Registro</ion-button>
@@ -64,38 +65,77 @@
 </template>
 
 <script lang="ts">
-import { IonLabel, IonInput, IonItem, IonContent, IonButton, IonHeader, IonTitle, IonToolbar,IonPage} from '@ionic/vue';
-import { defineComponent } from 'vue';
+import {
+  IonLabel,
+  IonInput,
+  IonItem,
+  IonContent,
+  IonButton,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonPage,
+} from "@ionic/vue";
+import CacheService from "@/services/CacheService";
+import { defineComponent } from "vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import ApiService from "@/services/ApiService";
 
 export default defineComponent({
-  components: { IonLabel, IonInput, IonItem,IonContent,IonButton,IonHeader,IonTitle,IonToolbar,IonPage},
-  data(){
-    return {
-      email:'',
-      password: ''
-    }
+  components: {
+    IonLabel,
+    IonInput,
+    IonItem,
+    IonContent,
+    IonButton,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonPage,
   },
-  methods:{
-    register(){
+  data() {
+    return {
+      name: "",
+      sex: "",
+      email: "",
+      password: "",
+      age:"",
+      currentWeight:"",
+      high:"",
+      level:"",
+    };
+  },
+  methods: {
+    register() {
       //Validate fields
-      console.log("Login.vue", this.email, this.password)
-
-
+      console.log("Login.vue", "test", this.password);
 
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, this.email, this.password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log("User created")
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("User created", userCredential, userCredential.user);
+
+          ApiService.postUser(userCredential.user.uid, {
+            name: this.name,
+            age: this.age,
+            sex: this.sex,
+            high: this.high,
+            currentWeight: this.currentWeight,
+            uid: userCredential.user.uid,
+            email: userCredential.user.email,
+          }).then(() => {
+            CacheService.setUser(userCredential.user)
+            this.$router.push("/folder/inicio");
           });
-    }
-  }
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+        });
+    },
+  },
 });
 </script>

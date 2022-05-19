@@ -88,6 +88,132 @@ const routes: Array<RouteRecordRaw> = [
       showMenu: true
     }
   },
+  {
+    path: '/SubViews/RPropias',
+    component: () => import ('../views/SubViews/RPropias.vue'),
+    meta:{
+      title:'Recetas propias',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/RBeFit',
+    component: () => import ('../views/SubViews/RBeFit.vue'),
+    meta:{
+      title:'Recetas BeFit',
+      showMenu: true,
+      isUser: false,
+      url: 'RBeFit'
+    }
+  },
+  {
+    path: '/SubViews/RBeFit/:id',
+    component: () => import ('../views/SubViews/RBeFitDetalle.vue'),
+    meta:{
+      title:'Detalle',
+      showMenu: true,
+      isUser: false
+    }
+  },
+  {
+    path: '/SubViews/RUsuario',
+    component: () => import ('../views/SubViews/RBeFit.vue'),
+    meta:{
+      title:'Recetas del usuario',
+      showMenu: true,
+      isUser: true,
+      url: 'RUsuario'
+    }
+  },
+  {
+    path: '/SubViews/crear-RUsuario',
+    component: () => import ('../views/SubViews/RUsuario.vue'),
+    meta:{
+      title:'Crear Recetas del usuario',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/RUsuario/:id',
+    component: () => import ('../views/SubViews/RBeFitDetalle.vue'),
+    meta:{
+      title:'Detalle',
+      showMenu: true,
+      isUser: true
+    }
+  },
+  {
+    path: '/SubViews/progresoDia',
+    component: () => import ('../views/SubViews/progresoDia.vue'),
+    meta:{
+      title:'Progreso diario',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/listDias',
+    component: () => import ('../views/SubViews/listDias.vue'),
+    meta:{
+      title:'Semana',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/listDeportes',
+    component: () => import ('../views/SubViews/listDeportes.vue'),
+    meta:{
+      title:'Deportes',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/listalimentos',
+    component: () => import ('../views/SubViews/listalimentos.vue'),
+    meta:{
+      title:'Alimentos',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/explicaReceta',
+    component: () => import ('../views/SubViews/explicaReceta.vue'),
+    meta:{
+      title:'Descripción de receta',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/comidasDia',
+    component: () => import ('../views/SubViews/comidasDia.vue'),
+    meta:{
+      title:'Alimentación diaria',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/añadirReceta',
+    component: () => import ('../views/SubViews/añadirReceta.vue'),
+    meta:{
+      title:'Añadir Receta',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/añadirDeporte',
+    component: () => import ('../views/SubViews/añadirDeporte.vue'),
+    meta:{
+      title:'Añadir deporte',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/recetAli',
+    component: () => import ('../views/SubViews/recetAli.vue'),
+    meta:{
+      title:'',
+      showMenu: true
+    }
+  },
 ]
 
 const router = createRouter({

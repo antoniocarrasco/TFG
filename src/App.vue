@@ -1,23 +1,30 @@
 <template>
   <IonApp>
     <IonSplitPane content-id="main-content">
-    <ion-menu content-id="main-content" type="overlay" v-show="$route.meta.showMenu">
+      <ion-menu content-id="main-content" type="overlay" v-show="$route.meta.showMenu">
         <ion-content>
+          <ion-list id="BeFit-list">
+            <ion-list-header>BeFit</ion-list-header>
 
-        <ion-list id="BeFit-list">
-          <ion-list-header>BeFit</ion-list-header>
+            <ion-note></ion-note>
 
-          <ion-note></ion-note>
+            <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
+              <ion-item
+                @click="selectedIndex = i"
+                router-direction="root"
+                :router-link="p.url"
+                lines="none"
+                detail="false"
+                class="hydrated"
+                :class="{ selected: selectedIndex === i }"
+              >
+                <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
 
-          <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
-            <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
-              <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-
-                <!--<ion-list id="labels-list">
+          <!--<ion-list id="labels-list">
                    <ion-list-header></ion-list-header>
 
                    <ion-item v-for="(label, index) in labels" lines="none" :key="index">
@@ -25,23 +32,49 @@
                      <ion-label>{{ label }}</ion-label>
                    </ion-item>
                  </ion-list>-->
-
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
+        </ion-content>
+      </ion-menu>
+      <ion-router-outlet id="main-content"></ion-router-outlet>
     </IonSplitPane>
   </IonApp>
 </template>
 
 <script lang="ts">
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane} from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { grid, nutrition, bookmarkOutline, bookmarkSharp, barChart, accessibility, analytics, calendar, help, funnel, build } from 'ionicons/icons';
+import {
+  IonApp,
+  IonContent,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonMenu,
+  IonMenuToggle,
+  IonNote,
+  IonRouterOutlet,
+  IonSplitPane,
+} from "@ionic/vue";
+import { defineComponent, ref } from "vue";
+import { useRoute } from "vue-router";
+import {
+  grid,
+  nutrition,
+  bookmarkOutline,
+  bookmarkSharp,
+  barChart,
+  accessibility,
+  analytics,
+  calendar,
+  help,
+  funnel,
+  build,
+} from "ionicons/icons";
 
+import CacheService from "@/services/CacheService";
+import ApiService from "./services/ApiService";
 
 export default defineComponent({
-  name: 'App',
+  name: "App",
   components: {
     IonApp,
     IonContent,
@@ -56,64 +89,84 @@ export default defineComponent({
     IonRouterOutlet,
     IonSplitPane,
   },
+  data() {
+    console.log("START");
+    //obtencion de UID
+    const session = Object.keys(sessionStorage).find((key) =>
+      key.includes("firebase:authUser:")
+    );
+    if (session) {
+      const userSession = sessionStorage.getItem(session ? session : "");
+      const user = JSON.parse(userSession ? userSession : "");
+      CacheService.setUser(user);
+    }
+    ApiService.start();
+    // ApiService.updateUser(5, {name: "Antonio"})
+    //     ApiService.getUser(5).then((user)=>{
+    // console.log('user', user)
+    //     });
+    // ApiService.postExample({ test3: "Prueba" }).then((response) => console.log(response));
+    // ApiService.postUser(6, { test2: "Prueba" }).then((response) => console.log(response));
+    return {};
+  },
   setup() {
     const selectedIndex = ref(0);
     const appPages = [
       {
-        title: 'Inicio',
-        url: '/folder/Inicio',
+        title: "Inicio",
+        url: "/folder/Inicio",
         iosIcon: grid,
         mdIcon: grid,
-
       },
       {
-        title: 'Usuario',
-        url: '/folder/Usuario',
+        title: "Usuario",
+        url: "/folder/usuario",
         iosIcon: accessibility,
-        mdIcon: accessibility
+        mdIcon: accessibility,
       },
       {
-        title: 'Progreso',
-        url: '/folder/Progreso',
+        title: "Progreso",
+        url: "/folder/Progreso",
         iosIcon: analytics,
-        mdIcon: analytics
+        mdIcon: analytics,
       },
       {
-        title: 'Registro',
-        url: '/folder/registro',
+        title: "Registro",
+        url: "/folder/registro",
         iosIcon: barChart,
-        mdIcon: barChart
+        mdIcon: barChart,
       },
       {
-        title: 'Recetas',
-        url: '/folder/Recetas',
+        title: "Recetas",
+        url: "/folder/Recetas",
         iosIcon: nutrition,
-        mdIcon: nutrition
+        mdIcon: nutrition,
       },
       {
-        title: 'Menu Semanal',
-        url: '/folder/menusemanal',
+        title: "Menu Semanal",
+        url: "/folder/menusemanal",
         iosIcon: calendar,
-        mdIcon: calendar
+        mdIcon: calendar,
       },
       {
-        title: 'Ajustes',
-        url: '/folder/Ajustes',
+        title: "Ajustes",
+        url: "/folder/Ajustes",
         iosIcon: build,
-        mdIcon: build
+        mdIcon: build,
       },
       {
-        title: 'Ayuda',
-        url: '/folder/Ayuda',
+        title: "Ayuda",
+        url: "/folder/ayuda",
         iosIcon: help,
-        mdIcon: help
-      }
+        mdIcon: help,
+      },
     ];
 
-
-    const path = window.location.pathname.split('folder/')[1];
+    const path = window.location.pathname.split("folder/")[1];
     if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+      selectedIndex.value = appPages.findIndex(
+        (page) => page.title.toLowerCase() === path.toLowerCase()
+      );
     }
 
     const route = useRoute();
@@ -130,16 +183,18 @@ export default defineComponent({
       analytics,
       calendar,
       help,
-      isSelected: (url: string) => url === route.path ? 'selected' : ''
-
-    }
-  }
+      isSelected: (url: string) => (url === route.path ? "selected" : ""),
+    };
+  },
 });
 </script>
 
 <style scoped>
 ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, rgb(255, 255, 255)));/*fondo pantalla emergente*/
+  --background: var(
+    --ion-item-background,
+    var(--ion-background-color, rgb(255, 255, 255))
+  ); /*fondo pantalla emergente*/
 }
 
 ion-menu.md ion-content {
@@ -151,13 +206,13 @@ ion-menu.md ion-content {
 }
 
 ion-label p.title {
-  background:  rgb(166, 228, 157);
+  background: rgb(166, 228, 157);
 }
 
-ion-menu.md ion-list {/*lista opciones*/
+ion-menu.md ion-list {
+  /*lista opciones*/
   padding: 20px 0;
   color: #067a0c;
-
 }
 
 ion-menu.md ion-note {
@@ -167,11 +222,11 @@ ion-menu.md ion-note {
 ion-menu.md ion-list-header,
 ion-menu.md ion-note {
   padding-left: 10px;
-  color: #067a0c
+  color: #067a0c;
 }
 
 ion-menu.md ion-list#BeFit-list {
-  border-bottom: 1px solid var(--ion-color-step-150,  #ffffff);
+  border-bottom: 1px solid var(--ion-color-step-150, #ffffff);
 }
 
 ion-menu.md ion-list#BeFit-list ion-list-header {
@@ -186,40 +241,41 @@ ion-menu.md ion-list#labels-list ion-list-header {
 
   margin-bottom: 18px;
 
-
-
   min-height: 26px;
 }
 
-ion-menu.md ion-item { /*Nombre pestaña*/
+ion-menu.md ion-item {
+  /*Nombre pestaña*/
   --padding-start: 10px;
   --padding-end: 10px;
   border-radius: 12px;
   color: #000000;
-
 }
 
-ion-menu.md ion-item.selected { /*letra selected*/
+ion-menu.md ion-item.selected {
+  /*letra selected*/
   --background: #067a0c;
-
 }
 
-ion-menu.md ion-item.selected ion-icon { /*seleccionado icono*/
+ion-menu.md ion-item.selected ion-icon {
+  /*seleccionado icono*/
   color: #ffffff;
 }
 
-ion-menu.md ion-item ion-icon { /*icono no seleccionado*/
+ion-menu.md ion-item ion-icon {
+  /*icono no seleccionado*/
   color: #067a0c;
 }
 
-ion-menu.md ion-item ion-label { /*boton tambien?*/
+ion-menu.md ion-item ion-label {
+  /*boton tambien?*/
   font-weight: 500;
-
 }
 
-ion-menu.md ion-item.selected ion-label { /*boton tambien?*/
+ion-menu.md ion-item.selected ion-label {
+  /*boton tambien?*/
   font-weight: 500;
-   color: #ffffff;
+  color: #ffffff;
 }
 
 ion-menu.ios ion-content {
@@ -256,7 +312,10 @@ ion-menu.ios ion-item ion-icon {
 
 ion-menu.ios ion-list#labels-list ion-list-header {
   margin-bottom: 8px;
-   --background: var(--ion-item-background, var(--ion-background-color,  rgb(166, 228, 157)));
+  --background: var(
+    --ion-item-background,
+    var(--ion-background-color, rgb(166, 228, 157))
+  );
 }
 
 ion-menu.ios ion-list-header,
@@ -267,7 +326,6 @@ ion-menu.ios ion-note {
 
 ion-menu.ios ion-note {
   margin-bottom: 8px;
-
 }
 
 ion-note {
@@ -278,7 +336,6 @@ ion-note {
 }
 
 ion-item.selected {
-
   color: #2aa731;
 }
 </style>

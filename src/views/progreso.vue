@@ -2,52 +2,146 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-buttons slot ="start">
-          <ion-menu-button color="primary"></ion-menu-button> 
+        <ion-buttons slot="start">
+          <ion-menu-button color="primary"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-    
+
       <div id="container">
-       
-          <ion-title size="large">Progreso de peso</ion-title>
-        
-        <ion-item>Peso actual</ion-item>
-         <ion-item>Peso objetivo</ion-item>
-          <ion-item>
-            <ion-label position="floating">Introducir peso</ion-label>
-            <ion-input ></ion-input>
-          </ion-item>
-          <h2>-</h2>
-          <ion-item>GRAFICO BAJADA DE PESO</ion-item>
+        <ion-title size="large">Progreso de peso</ion-title>
+
+        <ion-item>Peso actual: {{ data.currentWeight }}</ion-item>
+        <ion-item>Peso objetivo: {{ weights[0] - 5 }}</ion-item>
+        <ion-item>
+          <ion-label position="floating">Introducir peso actual</ion-label>
+          <ion-input v-model="currentWeight"></ion-input>
+
+          <ion-button expand="block" @click="updateWeight()">Actualizar</ion-button>
+        </ion-item>
+        <h2>-</h2>
+        <ion-item>GRAFICO BAJADA DE PESO</ion-item>
+        <!-- <ul id="example-1">
+          <li v-for="weight in weights" :key="weight">
+            {{ weight }}
+          </li>
+        </ul> -->
+        <ChartLine v-if="chart.labels.length > 0"
+          :labels="chart.labels"
+          :datasets="chart.datasets"
+        ></ChartLine>
+        <div>
+          <div>
+            <!-- <button type="button" @click="shuffleData">Add data</button>
+      <button type="button" @click="switchLegend">Swicth legends</button> -->
+          </div>
+        </div>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import CacheService from "@/services/CacheService";
+
+import ApiService from "@/services/ApiService";
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/vue";
+import { ref } from "vue";
+import ChartLine from "./chart/chart-line";
+
+const data: any = ref({});
+const weights: any = ref([]);
+const currentWeight: any = ref(0);
+const chart: any = ref({ labels: [], datasets: [] });
 
 export default {
-  name: 'Folder',
+  name: "Folder",
   components: {
+    ChartLine,
     IonButtons,
     IonContent,
     IonHeader,
     IonMenuButton,
+    IonInput,
     IonPage,
     IonTitle,
-    IonToolbar
-  }
-}
+    IonToolbar,
+  },
+  data() {
+    const userSession: any = CacheService.user;
+    ApiService.getUser(userSession.uid).then((user: any) => {
+      console.log("user", user);
+      weights.value = user.weights && Array.isArray(user.weights) ? user.weights : [];
+      data.value = user;
+      chart.value.labels = weights.value.map((w: any, i: any) => "Día " + i);
+      console.log(chart.value.labels);
+      chart.value.datasets = [
+        {
+          label: "weights",
+          backgroundColor: "#f87979",
+          data: weights.value,
+        },
+            {
+              label: "Objetivo",
+              backgroundColor: "#f87979",
+              data: new Array(weights.value.length).fill(40),
+            },
+      ];
+      console.log(chart.value.datasets);
+    });
+    return {
+      currentWeight,
+      data,
+      weights,
+      chart,
+    };
+  },
+  methods: {
+    updateWeight() {
+      ApiService.postPeso(data.value.uid, [...weights.value, currentWeight.value]).then((response) => {
+        const userSession: any = CacheService.user;
+
+        ApiService.getUser(userSession.uid).then((user: any) => {
+          weights.value = user.weights && Array.isArray(user.weights) ? user.weights : [];
+          data.value = user;
+          chart.value.labels = [];
+          chart.value.datasets = [
+            {
+              label: "weights",
+              backgroundColor: "#f87979",
+              data: weights.value,
+            },
+            {
+              label: "Objetivo",
+              backgroundColor: "#f87979",
+              data: new Array(weights.value.length).fill(40),
+            },
+          ];
+          setTimeout(() => {
+            chart.value.labels = weights.value.map((w: any, i: any) => "Día " + i);
+          }, 0);
+        });
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -58,29 +152,29 @@ export default {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background:  rgb(166, 228, 157);
+  background: rgb(166, 228, 157);
 }
 
 #container strong {
   font-size: 20px;
   line-height: 26px;
-  background:  rgb(166, 228, 157);
+  background: rgb(166, 228, 157);
 }
 
 #container p {
   font-size: 16px;
   line-height: 22px;
   color: #8c8c8c;
-  background:  rgb(166, 228, 157);
+  background: rgb(166, 228, 157);
   margin: 0;
 }
-ion-title{
-  color:#067a0c;
+ion-title {
+  color: #067a0c;
   font-weight: 700;
 }
 
 #container a {
   text-decoration: none;
-  background:  rgb(166, 228, 157);
+  background: rgb(166, 228, 157);
 }
 </style>

@@ -27,53 +27,80 @@
         <ion-button expand="block" @click="login">Login</ion-button>
 
         <p>
-                 <ion-item router-link ="/register"> No estoy registrado. </ion-item>
+          <ion-item router-link="/register"> No estoy registrado. </ion-item>
         </p>
-        
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonLabel, IonInput, IonItem, IonContent, IonButton, IonHeader, IonTitle, IonToolbar,IonPage} from '@ionic/vue';
-import { defineComponent } from 'vue';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  IonLabel,
+  IonInput,
+  IonItem,
+  IonContent,
+  IonButton,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonPage,
+} from "@ionic/vue";
+import { defineComponent } from "vue";
+import CacheService from "@/services/CacheService";
+import {
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+  browserSessionPersistence,
+} from "firebase/auth";
 
 export default defineComponent({
-  components: { IonLabel, IonInput, IonItem,IonContent,IonButton,IonHeader,IonTitle,IonToolbar,IonPage},
-  data(){
-    return {
-      email:'',
-      password: ''
-    }
+  components: {
+    IonLabel,
+    IonInput,
+    IonItem,
+    IonContent,
+    IonButton,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonPage,
   },
-  methods:{
-    login(){
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    login() {
       //Validate fields
-      console.log("login", this.email, this.password)
-
-
- 
-const auth = getAuth();
-
-
-
-
-signInWithEmailAndPassword(auth, this.email, this.password)
-  .then((userCredential) => {
-    // Signed in
-    const user = userCredential.user;
-    console.log("User logeado");
-    
-    
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
-
-    }
-  }
+      console.log("login", this.email, this.password);
+      const auth = getAuth();
+      setPersistence(auth, browserSessionPersistence)
+        .then(() => {
+          signInWithEmailAndPassword(auth, this.email, this.password)
+            .then((userCredential) => {
+              // Signed in
+              const user = userCredential.user;
+              CacheService.setUser(user);
+              this.$router.push("/folder/inicio");
+              console.log("User logeado");
+            })
+            .catch((error) => {
+              this.$router.push("/register");
+              
+              const errorCode = error.code;
+              const errorMessage = error.message;
+            });
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    },
+  },
 });
 </script>
