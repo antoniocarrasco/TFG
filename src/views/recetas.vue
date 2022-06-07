@@ -20,6 +20,8 @@
         <ion-item @click="goTo('/SubViews/comidasDia')">RECETAS USUARIO</ion-item>
 
         <ion-item @click="goTo('/SubViews/RBeFit')">RECETAS BEFIT</ion-item>
+
+        <ion-item @click="goTo('/SubViews/comidasDiaP')">RECETAS PÚBLICAS</ion-item>
       </div>
     </ion-content>
   </ion-page>

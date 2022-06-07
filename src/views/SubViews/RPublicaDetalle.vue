@@ -17,18 +17,30 @@
       </ion-header>
 
       <div id="container">
-        <ion-list>
-          <ion-item
-            @click="goTo('/SubViews/'+$route.meta.url+'/' + recipe.id)"
-            v-for="recipe in recipes"
-            :key="recipe"
-          >
-            <ion-label>
-           {{ recipe.nombre +'   ' +'(Contiene ' + recipe.kgcal +' kcal)' }}  
-           {{ recipes.id }}
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <ion-item>
+          <ion-label>
+            <img :src="recipe.image" />
+          </ion-label>
+        </ion-item>
+      
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Kcal totales: {{ recipe.kgcal }}</ion-card-subtitle>
+            <ion-card-title>{{ recipe.nombre }}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            {{ 'Tiempo: ' + recipe.tiempo + ' mins'}}
+          </ion-card-content>
+        </ion-card>
+        <ion-item>
+          <ion-label class="ion-text-wrap"> Pasos </ion-label>
+        </ion-item>
+        <ion-item v-for="(step, index) in recipe.steps" lines="none" :key="index">
+          <ion-label class="ion-text-wrap">
+            Paso {{ index + 1 }}: {{ step.descripcion }}
+          </ion-label>
+        </ion-item>
       </div>
     </ion-content>
   </ion-page>
@@ -50,9 +62,8 @@ import ApiService from "@/services/ApiService";
 import { defineComponent } from "vue";
 
 import { ref } from "vue";
-import CacheService from "@/services/CacheService";
 
-const recipes: any = ref([]);
+const recipe: any = ref({});
 export default defineComponent({
   name: "Folder",
   components: {
@@ -65,27 +76,13 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    if (this.$route.meta.isUser) {
-    const userSession: any = CacheService.user;
-      console.log(this.$route.meta.isUser)
-      ApiService.getRecipesUser(userSession.uid).then((r) => {
-        console.log(r);
-        recipes.value = r;
-      });
-    } else {
-      ApiService.get("recipes").then((r) => {
-        console.log(r);
-        recipes.value = r;
-      });
-    }
+    ApiService.get("recipesP/" + this.$route.params.id).then((r) => {
+      console.log(r);
+      recipe.value = r;
+    });
     return {
-      recipes,
+      recipe,
     };
-  },
-  methods: {
-    goTo(url: string) {
-      this.$router.push(url);
-    },
   },
 });
 </script>
@@ -123,4 +120,13 @@ ion-title {
   text-decoration: none;
   background: rgb(166, 228, 157);
 }
+img {
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+
 </style>

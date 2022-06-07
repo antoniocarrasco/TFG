@@ -17,24 +17,22 @@
       </ion-header>
 
       <div id="container">
-        <ion-title size="large">Progreso de peso</ion-title>
-
         <ion-item>Peso actual: {{ data.currentWeight }}</ion-item>
         <ion-item>Peso objetivo: {{ weights[0] - 5 }}</ion-item>
         <ion-item>
           <ion-label position="floating">Introducir peso actual</ion-label>
           <ion-input v-model="currentWeight"></ion-input>
-
-          <ion-button expand="block" @click="updateWeight()">Actualizar</ion-button>
+          <ion-button @click="updateWeight()">Actualizar</ion-button>
         </ion-item>
-        <h2>-</h2>
-        <ion-item>GRAFICO BAJADA DE PESO</ion-item>
+
+        <ion-item align="center">GRAFICO BAJADA DE PESO</ion-item>
         <!-- <ul id="example-1">
           <li v-for="weight in weights" :key="weight">
             {{ weight }}
           </li>
         </ul> -->
-        <ChartLine v-if="chart.labels.length > 0"
+        <ChartLine
+          v-if="chart.labels.length > 0"
           :labels="chart.labels"
           :datasets="chart.datasets"
         ></ChartLine>
@@ -94,15 +92,15 @@ export default {
       console.log(chart.value.labels);
       chart.value.datasets = [
         {
-          label: "weights",
-          backgroundColor: "#f87979",
+          label: "Pesos",
+          backgroundColor: "#088A29",
           data: weights.value,
         },
-            {
-              label: "Objetivo",
-              backgroundColor: "#f87979",
-              data: new Array(weights.value.length).fill(40),
-            },
+        {
+          label: "Objetivo",
+          backgroundColor: "#0B0B3B",
+          data: new Array(weights.value.length).fill(weights.value[0] - 5 ),
+        },
       ];
       console.log(chart.value.datasets);
     });
@@ -115,30 +113,33 @@ export default {
   },
   methods: {
     updateWeight() {
-      ApiService.postPeso(data.value.uid, [...weights.value, currentWeight.value]).then((response) => {
-        const userSession: any = CacheService.user;
+      ApiService.postPeso(data.value.uid, [...weights.value, currentWeight.value]).then(
+        (response) => {
+          const userSession: any = CacheService.user;
 
-        ApiService.getUser(userSession.uid).then((user: any) => {
-          weights.value = user.weights && Array.isArray(user.weights) ? user.weights : [];
-          data.value = user;
-          chart.value.labels = [];
-          chart.value.datasets = [
-            {
-              label: "weights",
-              backgroundColor: "#f87979",
-              data: weights.value,
-            },
-            {
-              label: "Objetivo",
-              backgroundColor: "#f87979",
-              data: new Array(weights.value.length).fill(40),
-            },
-          ];
-          setTimeout(() => {
-            chart.value.labels = weights.value.map((w: any, i: any) => "Día " + i);
-          }, 0);
-        });
-      });
+          ApiService.getUser(userSession.uid).then((user: any) => {
+            weights.value =
+              user.weights && Array.isArray(user.weights) ? user.weights : [];
+            data.value = user;
+            chart.value.labels = [];
+            chart.value.datasets = [
+              {
+                label: "weights",
+                backgroundColor: "#088A29",
+                data: weights.value,
+              },
+              {
+                label: "Objetivo",
+                backgroundColor: "#0B0B3B",
+                data: new Array(weights.value.length).fill(40),
+              },
+            ];
+            setTimeout(() => {
+              chart.value.labels = weights.value.map((w: any, i: any) => "Día " + i);
+            }, 0);
+          });
+        }
+      );
     },
   },
 };
@@ -152,20 +153,20 @@ export default {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
 }
 
 #container strong {
   font-size: 20px;
   line-height: 26px;
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
 }
 
 #container p {
   font-size: 16px;
   line-height: 22px;
   color: #8c8c8c;
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
   margin: 0;
 }
 ion-title {
@@ -175,6 +176,6 @@ ion-title {
 
 #container a {
   text-decoration: none;
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
 }
 </style>

@@ -22,16 +22,20 @@
         <ion-item @click="goTo('/SubViews/comidasDia')"
           >Añadir calorias de comidas</ion-item
         >
-        <ion-item>Añadir calorias gastadas</ion-item>
-        <ion-item>KCAL Objetivo</ion-item>
-        <ion-item>KCAL Actuales</ion-item>
+        <ion-item @click="goTo('/SubViews/addDeporte')"
+          >Añadir deporte</ion-item
+        >
+        <ion-item>KCAL Objetivo: </ion-item>
+        <ion-item>KCAL Actuales: {{ comida - sports }}</ion-item>
+        <ion-item>KCAL Deporte: {{ sports }}</ion-item>
+        <ion-item>KCAL Consumidas: {{ comida }}</ion-item>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import {
   IonButtons,
   IonContent,
@@ -42,6 +46,12 @@ import {
   IonToolbar,
 } from "@ionic/vue";
 import CacheService from "@/services/CacheService";
+import ApiService from "@/services/ApiService";
+
+const sports = ref(0);
+const comida = ref(0);
+const LAST_DAY = 1000 * 60 * 60 * 24 * 7;
+const currentDay = new Date().getDay();
 
 export default defineComponent({
   name: "Folder",
@@ -55,7 +65,40 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    console.log(CacheService.user);
+    const user: any = CacheService.user;
+    ApiService.getSport(user.uid)
+      .then((s) => {
+        return Object.values(s)
+          .filter((s_: any) => s_.date > new Date().getTime() - LAST_DAY)
+          .map((s_: any) => {
+            return { ...s_, day: new Date(s_.date).getDay() };
+          });
+      })
+      .then((s) => {
+        const sportToday = s.filter((s_) => s_.day === currentDay);
+        console.log(sportToday);
+        let total = 0;
+        total = sportToday.reduce(
+          (prev, today) => prev + +today.minutes * +today.sport,
+          0
+        );
+        console.log(total);
+        sports.value = total;
+      });
+    ApiService.getRDU(user.uid, new Date().getDay())
+      .then((r) => {
+        return Object.values(r);
+      })
+      .then((recipes: any[]) => {
+        console.log(recipes);
+        let total = 0;
+        total = recipes.reduce((prev: any, recipe: any) => prev + +recipe.kgcal, 0);
+        comida.value = total;
+      });
+    return {
+      sports,
+      comida,
+    };
   },
   methods: {
     goTo(url: string) {

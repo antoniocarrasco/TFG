@@ -17,11 +17,11 @@
       </ion-header>
       <div expand="full" id="container">
         <ion-list>
-          <ion-item @click="goTo('/SubViews/crear-RUsuario')" position="floating">
-          DeIntro
+          <ion-item @click="goTo('/SubViews/crear-'+$route.meta.url)" position="floating">
+          Introducir receta
           </ion-item>
-          <ion-item @click="goTo('/SubViews/RUsuario')" position="floating">
-          ver
+          <ion-item @click="goTo('/SubViews/'+$route.meta.url)" position="floating">
+          Visualizar recetas
           </ion-item>
         </ion-list>
       </div>
@@ -92,5 +92,19 @@ ion-title {
 #container a {
   text-decoration: none;
   background: rgb(166, 228, 157);
+}
+input {
+   background-color: #067a0c;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 auto 0;
+  min-height: 15px;
+  overflow: hidden;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  width: 400px;
 }
 </style>

@@ -35,6 +35,19 @@ class ApiService {
         //     console.error(error);
         // });
     }
+    getRecipesUser(idUser: any ){
+        const dbRef = ref(getDatabase());
+        return get(child(dbRef, `recipesU/${idUser}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    console.log(snapshot.val());
+                    return snapshot.val();
+                } else {
+                    console.log("No data available");
+                    return false;
+                }
+            });
+    }
     postExample(body: any) {
         return set(ref(db, '/example/'), body);
     }
@@ -51,14 +64,75 @@ class ApiService {
     updateUser(key: any, body: any) {
         return update(ref(db, `/user/${key}/`), body);
     }
-    updateRecipe(key: any, body: any) {
-        return update(ref(db, `/recipesU/${key}/`), body);
+    updateRecipe(idUser: any,key: any, body: any) {
+        return update(ref(db, `/recipesU/${idUser}/${key}/`), body);
+    }
+    updateRecipeP(key: any, body: any) {
+        return update(ref(db, `/recipesP/${key}/`), body);
     }
     deleteUser(key: any) {
         return remove(ref(db, `/user/${key}/`));
     }
     start() {
         db
+    }
+
+    postSport(uid: string, body: any) {
+        const date = new Date().getTime();
+        return set(ref(db, '/sport/' + uid + '/' + date), { ...body, date });
+    }
+    getSport(uid: string) {
+        const dbRef = ref(getDatabase());
+        return get(child(dbRef, `sport/${uid}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    console.log(snapshot.val());
+                    return snapshot.val();
+                } else {
+                    console.log("No data available");
+                    return false;
+                }
+            });
+    }
+    // =========== RECETAS DIARIAS DE USUARIO
+    postRDU(uid: string, day: any, body: any) {
+        const date = new Date().getTime();
+        return set(ref(db, '/recipesDayUser/' + uid + '/' + day + '/' + date), { ...body, date });
+    }
+    getRDU(uid: string, day: any) {
+        const dbRef = ref(getDatabase());
+        return get(child(dbRef, `recipesDayUser/${uid}/${day}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    console.log(snapshot.val());
+                    return snapshot.val();
+                } else {
+                    console.log("No data available");
+                    return false;
+                }
+            });
+        // catch((error) => {
+        //     console.error(error);
+        // });
+    }
+    deleteRDU(uid: string, day: any) {
+        return remove(ref(db, `/recipesDayUser/${uid}/${day}`));
+    }
+
+    uploadFile(event: any) {
+        return new Promise((resolve, reject) => {
+            const file = event.srcElement.files[0];
+            const reader: any = new FileReader();
+            reader.readAsBinaryString(file);
+
+            reader.onload = function () {
+                resolve('data:image/jpeg;base64,' + btoa(reader.result))
+            };
+            reader.onerror = function () {
+                console.log('there are some problems');
+                reject(false)
+            };
+        })
     }
 }
 

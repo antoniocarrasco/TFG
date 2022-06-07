@@ -17,16 +17,29 @@
       </ion-header>
 
       <div id="container">
+         <ion-item>
+          <ion-label>
+            <img :src="recipe.image" />
+          </ion-label>
+        </ion-item>
         <ion-card>
           <ion-card-header>
-            <ion-card-subtitle>Kg/cal: {{recipe.kgcal}}</ion-card-subtitle>
-            <ion-card-title>{{recipe.nombre}}</ion-card-title>
+            <ion-card-subtitle>Kcal totales: {{ recipe.kgcal }}</ion-card-subtitle>
+            <ion-card-title>{{ recipe.nombre }}</ion-card-title>
           </ion-card-header>
 
           <ion-card-content>
-            {{recipe.descripcion}}
+            {{ 'Tiempo: ' + recipe.tiempo + ' mins'}}
           </ion-card-content>
         </ion-card>
+        <ion-item>
+          <ion-label class="ion-text-wrap"> Pasos </ion-label>
+        </ion-item>
+        <ion-item v-for="(step, index) in recipe.steps" lines="none" :key="index">
+          <ion-label class="ion-text-wrap">
+            Paso {{ index + 1 }}: {{ step.descripcion }}
+          </ion-label>
+        </ion-item>
       </div>
     </ion-content>
   </ion-page>
@@ -113,5 +126,12 @@ ion-title {
 #container a {
   text-decoration: none;
   background: rgb(166, 228, 157);
+}
+img {
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 </style>

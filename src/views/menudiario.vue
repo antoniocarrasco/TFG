@@ -17,75 +17,79 @@
       </ion-header>
 
       <div id="container">
-        <ion-list>
-          <ion-item
-            @click="goTo('/SubViews/'+$route.meta.url+'/' + recipe.id)"
-            v-for="recipe in recipes"
-            :key="recipe"
-          >
-            <ion-label>
-           {{ recipe.nombre +'   ' +'(Contiene ' + recipe.kgcal +' kcal)' }}  
-           {{ recipes.id }}
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <ion-list>Añadido</ion-list>
+        <ion-item v-for="recipe in recipes" :key="recipe">
+          {{ recipe.nombre }}
+        </ion-item>
       </div>
     </ion-content>
+    <ion-footer :translucent="true">
+      <ion-toolbar>
+        <ion-buttons slot="secondary">
+          <ion-button color="primary" @click="goTo('/folder/menusemanal/'+$route.params.day+'/recetas')">
+            Añadir
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="primary" @click="deleteRecipe()">
+          <ion-button color="danger"> Borrar todo </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
 <script lang="ts">
+import ApiService from "@/services/ApiService";
+import CacheService from "@/services/CacheService";
 import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonFooter,
   IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/vue";
-
-import ApiService from "@/services/ApiService";
-
 import { defineComponent } from "vue";
-
 import { ref } from "vue";
-import CacheService from "@/services/CacheService";
 
 const recipes: any = ref([]);
+
 export default defineComponent({
   name: "Folder",
   components: {
     IonButtons,
     IonContent,
     IonHeader,
+    IonFooter,
     IonMenuButton,
     IonPage,
     IonTitle,
     IonToolbar,
   },
-  data() {
-    if (this.$route.meta.isUser) {
-    const userSession: any = CacheService.user;
-      console.log(this.$route.meta.isUser)
-      ApiService.getRecipesUser(userSession.uid).then((r) => {
-        console.log(r);
-        recipes.value = r;
-      });
-    } else {
-      ApiService.get("recipes").then((r) => {
-        console.log(r);
-        recipes.value = r;
-      });
-    }
-    return {
-      recipes,
-    };
-  },
   methods: {
     goTo(url: string) {
       this.$router.push(url);
     },
+    deleteRecipe() {
+      const userSession: any = CacheService.user;
+      const day = this.$route.params.day;
+      ApiService.deleteRDU(userSession.uid, day)
+    },
+  },
+  data() {
+    const userSession: any = CacheService.user;
+    const day = this.$route.params.day;
+    ApiService.getRDU(userSession.uid, day).then((r) => {
+      if (r) {
+        console.log(Object.values(r));
+        recipes.value = Object.values(r);
+      }
+    });
+    return {
+      recipes,
+    };
   },
 });
 </script>

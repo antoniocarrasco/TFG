@@ -20,20 +20,25 @@
         <ion-list>
           <ion-item>
             <ion-label>
+              <img :src="data.profile" />
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
               <h1>Nombre</h1>
               <h2>{{data.name}}</h2>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
-              <h1>Sexo</h1>{{data.sex}} 
+              <h1>Sexo</h1>
               <h2>{{data.sex === 'H' ? 'Hombre' : 'Mujer' }}</h2>
               </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
               <h1>Peso (KG)</h1>
-              <h2>{{data.weigth}}</h2>
+              <h2>{{ data.currentWeight}}</h2>
             </ion-label>
             
           </ion-item>
@@ -60,6 +65,15 @@
         </ion-list>
       </div>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="secondary">
+          <ion-button color="primary" @click="goTo('/folder/Usuario-edit')">
+            Editar
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
@@ -103,6 +117,11 @@ export default defineComponent({
       data,
     };
   },
+  methods:{
+    goTo(url: string) {
+      this.$router.push(url);
+    },
+  }
 });
 </script>
 
@@ -114,7 +133,7 @@ export default defineComponent({
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
 }
 
 #container strong {

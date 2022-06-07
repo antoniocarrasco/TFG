@@ -24,8 +24,7 @@
             :key="recipe"
           >
             <ion-label>
-           {{ recipe.nombre +'   ' +'(Contiene ' + recipe.kgcal +' kcal)' }}  
-           {{ recipes.id }}
+              {{ recipe.nombre }}
             </ion-label>
           </ion-item>
         </ion-list>
@@ -50,7 +49,6 @@ import ApiService from "@/services/ApiService";
 import { defineComponent } from "vue";
 
 import { ref } from "vue";
-import CacheService from "@/services/CacheService";
 
 const recipes: any = ref([]);
 export default defineComponent({
@@ -65,19 +63,10 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    if (this.$route.meta.isUser) {
-    const userSession: any = CacheService.user;
-      console.log(this.$route.meta.isUser)
-      ApiService.getRecipesUser(userSession.uid).then((r) => {
+      ApiService.get("recipesP").then((r) => {
         console.log(r);
         recipes.value = r;
       });
-    } else {
-      ApiService.get("recipes").then((r) => {
-        console.log(r);
-        recipes.value = r;
-      });
-    }
     return {
       recipes,
     };

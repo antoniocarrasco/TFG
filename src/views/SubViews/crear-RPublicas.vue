@@ -30,7 +30,6 @@
               <input type="file" name="image" id="image" @change="upload($event)" />
             </ion-label>
           </ion-item>
-        
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
             <ion-input v-model="recipe.nombre"></ion-input>
@@ -47,7 +46,7 @@
             <ion-label position="floating">Descripción</ion-label>
             <ion-textarea v-model="recipe.descripcion"></ion-textarea>
           </ion-item>
-        <ion-item>
+          <ion-item>
             <ion-label position="floating">Pasos</ion-label>
             <ion-button slot="end" @click="addStep()"> Agregar </ion-button>
           </ion-item>
@@ -80,7 +79,6 @@ import {
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import ApiService from "@/services/ApiService";
-import CacheService from "@/services/CacheService";
 
 const recipe: any = ref({});
 const steps: any = ref([]);
@@ -98,7 +96,7 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    return { recipe, steps  };
+    return { recipe, steps };
   },
   methods: {
     addStep() {
@@ -119,22 +117,21 @@ export default defineComponent({
           console.log("HAY UN ERROR");
         });
     },
-    crear(){
-        console.log(recipe.value)
-    const userSession: any = CacheService.user;
-        const id = new Date().getTime();
-        this.$router.push('/SubViews/RUsuario');
-        
-        ApiService.updateRecipe(userSession.uid, id, {
-          id,
-          nombre: recipe.value.nombre,
-          kgcal: recipe.value.kgcal,
-          tiempo: recipe.value.tiempo,
-          descripcion: recipe.value.descripcion,
-          image: recipe.value.image,
-          steps: steps.value
-        })
-    }
+    crear() {
+      console.log(recipe.value);
+      const id = new Date().getTime();
+      this.$router.push("/SubViews/RPublicas");
+
+      ApiService.updateRecipeP(id, {
+        id,
+        nombre: recipe.value.nombre,
+        kgcal: recipe.value.kgcal,
+        tiempo: recipe.value.tiempo,
+        descripcion: recipe.value.descripcion,
+        image: recipe.value.image,
+        steps: steps.value
+      });
+    },
   },
 });
 </script>

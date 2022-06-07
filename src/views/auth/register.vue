@@ -74,6 +74,8 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
+  IonSelect,
+  IonSelectOption,
   IonPage,
 } from "@ionic/vue";
 import CacheService from "@/services/CacheService";
@@ -91,6 +93,8 @@ export default defineComponent({
     IonHeader,
     IonTitle,
     IonToolbar,
+    IonSelect,
+    IonSelectOption,
     IonPage,
   },
   data() {
@@ -116,12 +120,13 @@ export default defineComponent({
           // Signed in
           const user = userCredential.user;
           console.log("User created", userCredential, userCredential.user);
-
+          console.log("sex level", this.level , this.sex);
           ApiService.postUser(userCredential.user.uid, {
             name: this.name,
             age: this.age,
             sex: this.sex,
             high: this.high,
+            level: this.level,
             currentWeight: this.currentWeight,
             uid: userCredential.user.uid,
             email: userCredential.user.email,
