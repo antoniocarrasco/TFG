@@ -20,12 +20,12 @@
         <ion-item>Peso actual: {{ data.currentWeight }}</ion-item>
         <ion-item>Peso objetivo: {{ weights[0] - 5 }}</ion-item>
         <ion-item>
-          <ion-label position="floating">Introducir peso actual</ion-label>
+          <ion-label position="floating">Introducir peso actual: </ion-label>
           <ion-input v-model="currentWeight"></ion-input>
           <ion-button @click="updateWeight()">Actualizar</ion-button>
         </ion-item>
-
-        <ion-item align="center">GRAFICO BAJADA DE PESO</ion-item>
+        
+         <center>GRAFICO BAJADA DE PESO</center> 
         <!-- <ul id="example-1">
           <li v-for="weight in weights" :key="weight">
             {{ weight }}
@@ -85,24 +85,24 @@ export default {
   data() {
     const userSession: any = CacheService.user;
     ApiService.getUser(userSession.uid).then((user: any) => {
-      console.log("user", user);
+     
       weights.value = user.weights && Array.isArray(user.weights) ? user.weights : [];
       data.value = user;
       chart.value.labels = weights.value.map((w: any, i: any) => "Día " + i);
-      console.log(chart.value.labels);
+      
       chart.value.datasets = [
         {
           label: "Pesos",
-          backgroundColor: "#088A29",
+          backgroundColor: "#067a0c",
           data: weights.value,
         },
         {
           label: "Objetivo",
-          backgroundColor: "#0B0B3B",
+          backgroundColor: "#bb1119",
           data: new Array(weights.value.length).fill(weights.value[0] - 5 ),
         },
       ];
-      console.log(chart.value.datasets);
+      
     });
     return {
       currentWeight,
@@ -124,14 +124,14 @@ export default {
             chart.value.labels = [];
             chart.value.datasets = [
               {
-                label: "weights",
-                backgroundColor: "#088A29",
+                label: "Pesos",
+                backgroundColor: "#067a0c",
                 data: weights.value,
               },
               {
                 label: "Objetivo",
-                backgroundColor: "#0B0B3B",
-                data: new Array(weights.value.length).fill(40),
+                backgroundColor: "#bb1119",
+                data: new Array(weights.value.length).fill(weights.value[0] - 5),
               },
             ];
             setTimeout(() => {
@@ -170,6 +170,13 @@ export default {
   margin: 0;
 }
 ion-title {
+  color: #067a0c;
+  font-weight: 700;
+}
+center {
+  margin: 30px;
+  font-size: 25px;
+  line-height: 22px;
   color: #067a0c;
   font-weight: 700;
 }

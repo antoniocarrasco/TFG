@@ -20,6 +20,7 @@
         <ion-list>Añadido</ion-list>
         <ion-item v-for="recipe in recipes" :key="recipe">
           {{ recipe.nombre }}
+         <ion-item><img  :src="recipe.image" /></ion-item> 
         </ion-item>
       </div>
     </ion-content>
@@ -81,9 +82,9 @@ export default defineComponent({
   data() {
     const userSession: any = CacheService.user;
     const day = this.$route.params.day;
-    ApiService.getRDU(userSession.uid, day).then((r) => {
+    ApiService.getRDUday(userSession.uid, day).then((r) => {
       if (r) {
-        console.log(Object.values(r));
+        
         recipes.value = Object.values(r);
       }
     });
@@ -126,5 +127,12 @@ ion-title {
 #container a {
   text-decoration: none;
   background: rgb(166, 228, 157);
+}
+img {
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 </style>

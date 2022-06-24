@@ -17,18 +17,24 @@
       </ion-header>
 
       <div id="container">
-        <ion-item>GRAFICO PROGRESO DIARIO-OBJETIVO</ion-item>
-        <h2 expand="full">-</h2>
-        <ion-item @click="goTo('/SubViews/comidasDia')"
-          >Añadir calorias de comidas</ion-item
-        >
+        <ion-item>GRAFICO RESUMEN</ion-item>
+        
+        <ChartBar
+          v-if="chart.labels.length > 0"
+          :labels="chart.labels"
+          :datasets="chart.datasets"
+        ></ChartBar>
+       
+        
         <ion-item @click="goTo('/SubViews/addDeporte')"
           >Añadir deporte</ion-item
         >
-        <ion-item>KCAL Objetivo: </ion-item>
-        <ion-item>KCAL Actuales: {{ comida - sports }}</ion-item>
-        <ion-item>KCAL Deporte: {{ sports }}</ion-item>
-        <ion-item>KCAL Consumidas: {{ comida }}</ion-item>
+        <ion-item>RESUMEN </ion-item>
+        <ion-item>KCAL Objetivo: 2000 KCAL</ion-item>
+        <ion-item>KCAL Actuales: {{ comida - sports }} KCAL</ion-item>
+        <ion-item>KCAL Deporte: {{ sports }} KCAL</ion-item>
+        <ion-item>KCAL Consumidas: {{ comida }} KCAL</ion-item>
+      
       </div>
     </ion-content>
   </ion-page>
@@ -36,6 +42,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import ChartBar from "./chart/chart-bar";
 import {
   IonButtons,
   IonContent,
@@ -52,10 +59,12 @@ const sports = ref(0);
 const comida = ref(0);
 const LAST_DAY = 1000 * 60 * 60 * 24 * 7;
 const currentDay = new Date().getDay();
+const chart: any = ref({ labels: [], datasets: [] });
 
 export default defineComponent({
   name: "Folder",
   components: {
+    ChartBar,
     IonButtons,
     IonContent,
     IonHeader,
@@ -76,28 +85,55 @@ export default defineComponent({
       })
       .then((s) => {
         const sportToday = s.filter((s_) => s_.day === currentDay);
-        console.log(sportToday);
+       
         let total = 0;
         total = sportToday.reduce(
           (prev, today) => prev + +today.minutes * +today.sport,
           0
         );
-        console.log(total);
+        
         sports.value = total;
       });
-    ApiService.getRDU(user.uid, new Date().getDay())
+    ApiService.getRDUday(user.uid, new Date().getDay())
       .then((r) => {
         return Object.values(r);
       })
       .then((recipes: any[]) => {
-        console.log(recipes);
+        
         let total = 0;
         total = recipes.reduce((prev: any, recipe: any) => prev + +recipe.kgcal, 0);
         comida.value = total;
-      });
+      }); 
+      
+      chart.value.labels =['KCAL'];
+      
+      chart.value.datasets = [
+        {
+          label: 'Objetivo',
+          backgroundColor: '#bb1119',
+          data: [2000]
+        },
+        {
+          label: 'Actual',
+          backgroundColor: '#8CC46E',
+          data: [comida.value - sports.value]
+        },
+        {
+          label: 'Deporte',
+          backgroundColor: '#0D52E7',
+          data: [-sports.value]
+        },
+        {
+          label: 'Consumidas',
+          backgroundColor: '#067a0c',
+          data: [comida.value]
+        },
+      ];
+      
     return {
       sports,
       comida,
+      chart,
     };
   },
   methods: {
@@ -116,20 +152,30 @@ export default defineComponent({
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
+}
+content {
+ 
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgb(214, 248, 209);
 }
 
 #container strong {
   font-size: 20px;
   line-height: 26px;
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
 }
 
 #container p {
   font-size: 16px;
   line-height: 22px;
   color: #8c8c8c;
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
   margin: 0;
 }
 ion-title {
@@ -139,6 +185,6 @@ ion-title {
 
 #container a {
   text-decoration: none;
-  background: rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
 }
 </style>

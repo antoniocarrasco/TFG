@@ -21,44 +21,43 @@
           <ion-label position="floating">Tiempo(minutos)</ion-label>
           <ion-input v-model="minutes"></ion-input>
         </ion-item>
+        <ion-item>
+          <ion-label position="floating">Intensidad</ion-label>
+          <ion-select v-model="intensity" placeholder="Select One">
+            <!-- intensity subir y multiplicar en el resultado-->
+            <ion-select-option value="1.5">Alto</ion-select-option>
+            <ion-select-option value="1.25">Medio</ion-select-option>
+            <ion-select-option value="1">Bajo</ion-select-option>
+          </ion-select>
+        </ion-item>
 
         <ion-list>
           <ion-radio-group v-model="sport" value="biff">
             <ion-list-header>
               <ion-label>Deporte</ion-label>
             </ion-list-header>
-            <ion-item>
-              <ion-label>Futbol</ion-label>
-              <ion-radio slot="start" value="3"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Beisbol</ion-label>
-              <ion-radio slot="start" value="1.5"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Baloncesto</ion-label>
-              <ion-radio slot="start" value="2"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Natacion</ion-label>
-              <ion-radio slot="start" value="2.5"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Tenis</ion-label>
-              <ion-radio slot="start" value="1.8"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Padel</ion-label>
-              <ion-radio slot="start" value="1.5"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Running</ion-label>
-              <ion-radio slot="start" value="1.7"></ion-radio>
+
+            <ion-item v-for="(s, index) in sportList" lines="none" :key="index">
+              <ion-label>{{ s.name }} </ion-label>
+              <ion-radio slot="start" :value="s.coef"></ion-radio>
+              <ion-button @click="goTo('/SubViews/editDeporteList/'+s.id)" color="primary" v-if="isAdmin" expand="block">
+                <ion-icon slot="icon-only" :ios="pencil" :md="pencil"></ion-icon>
+              </ion-button>
+              <ion-button @click="deleteSport(s.id)" color="primary" v-if="isAdmin" expand="block">
+                <ion-icon slot="icon-only" :ios="trash" :md="trash"></ion-icon>
+              </ion-button>
             </ion-item>
           </ion-radio-group>
         </ion-list>
       </div>
     </ion-content>
+    <ion-footer :translucent="true">
+      <ion-toolbar>
+        <ion-buttons slot="secondary" v-if="isAdmin">
+          <ion-button color="primary" expand="block" @click="goTo('/SubViews/addDeporteList')">AÑADIR NUEVO DEPORTE</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
     <ion-footer :translucent="true">
       <ion-toolbar>
         <ion-buttons slot="secondary">
@@ -76,6 +75,7 @@ import {
   IonContent,
   IonHeader,
   IonInput,
+  IonIcon,
   IonMenuButton,
   IonPage,
   IonRadio,
@@ -83,16 +83,20 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/vue";
+import { pencil, trash } from "ionicons/icons";
 import ApiService from "@/services/ApiService";
 import CacheService from "@/services/CacheService";
-
+const isAdmin = ref();
 const minutes: any = ref(0);
+const intensity: any = ref(0);
 const sport: any = ref("");
+const sportList: any = ref([]);
 export default defineComponent({
   name: "Folder",
   components: {
     IonInput,
     IonRadio,
+    IonIcon,
     IonRadioGroup,
     IonButtons,
     IonContent,
@@ -103,20 +107,43 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
+    isAdmin.value = CacheService.isAdmin;
+    ApiService.get("sportList").then((sports) => {
+     
+      sportList.value = sports;
+    });
     return {
+      sportList,
       minutes,
       sport,
+      intensity,
+      isAdmin,
+      pencil,
+      trash,
     };
   },
   methods: {
+    goTo(url: string) {
+      this.$router.push(url);
+    },
     crear() {
       const userSession: any = CacheService.user;
 
       ApiService.postSport(userSession.uid, {
         minutes: minutes.value,
         sport: sport.value,
+        intensity: intensity.value,
       });
+
       this.$router.push("/folder/Inicio");
+    },
+    deleteSport(index: any) {
+      ApiService.deleteSport(index).then((response) => {
+        ApiService.get("sportList").then((sports) => {
+          
+          sportList.value = sports;
+        });
+      });
     },
   },
 });

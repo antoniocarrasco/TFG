@@ -17,11 +17,29 @@
       </ion-header>
 
       <div id="container">
-        <ion-item @click="goTo('/SubViews/comidasDia')">RECETAS USUARIO</ion-item>
-
-        <ion-item @click="goTo('/SubViews/RBeFit')">RECETAS BEFIT</ion-item>
-
-        <ion-item @click="goTo('/SubViews/comidasDiaP')">RECETAS PÚBLICAS</ion-item>
+        <ion-card @click="goTo('/SubViews/comidasDia')">
+          <img src="../../public/assets/comida2.jpg" />
+          <ion-card-header>
+            <ion-card-title>RECETAS DE USUARIO</ion-card-title>
+          </ion-card-header>
+          <ion-card-content> Listado de recetas personales del usuario. </ion-card-content>
+        </ion-card>
+        <ion-card @click="goTo('/SubViews/comidasDiaP')">
+          <img src="../../public/assets/pasta.jpg" />
+          <ion-card-header>
+            <ion-card-title>RECETAS PUBLICAS</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Listado de recetas de usuarios que las comparten publicamente.
+          </ion-card-content>
+        </ion-card>
+        <ion-card @click="goTo('/SubViews/RBeFit')">
+          <img src="../../public/assets/comida3.jpeg" />
+          <ion-card-header>
+            <ion-card-title>RECETAS BEFIT</ion-card-title>
+          </ion-card-header>
+          <ion-card-content> Listado de recetas propias de la aplicación. </ion-card-content>
+        </ion-card>
       </div>
     </ion-content>
   </ion-page>
@@ -69,22 +87,9 @@ export default defineComponent({
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgb(166, 228, 157);
+  background: rgb(214, 248, 209);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(166, 228, 157);
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(166, 228, 157);
-  margin: 0;
-}
 ion-title {
   color: #067a0c;
   font-weight: 700;
@@ -92,6 +97,19 @@ ion-title {
 
 #container a {
   text-decoration: none;
-  background: rgb(166, 228, 157);
+  background:  rgb(255, 255, 255);
+}
+ion-card {
+  border: #8c8c8c;
+  background: rgb(255, 255, 255);
+  text-decoration-color: black;
+}
+
+img {
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 </style>

@@ -16,57 +16,50 @@
         </ion-toolbar>
       </ion-header>
 
-      <div id="container">
+      <div id="container"> 
+        <ion-list> 
         <ion-item>
-          <ion-label>
-            <img :src="recipe.image" />
-          </ion-label>
+          <ion-label position="floating">Name</ion-label>
+          <ion-input v-model="sport.name"></ion-input>
         </ion-item>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-subtitle>Kcal totales: {{ recipe.kgcal }}</ion-card-subtitle>
-            <ion-card-title>{{ recipe.nombre }}</ion-card-title>
-          </ion-card-header>
-
-          <ion-card-content>
-            {{ 'Tiempo: ' + recipe.tiempo + ' mins'}}
-          </ion-card-content>
-        </ion-card>
         <ion-item>
-          <ion-label class="ion-text-wrap"> Pasos </ion-label>
+          <ion-label position="floating">Coef</ion-label>
+          <ion-input v-model="sport.coef"></ion-input>
         </ion-item>
-        <ion-item v-for="(step, index) in recipe.steps" lines="none" :key="index">
-          <ion-label class="ion-text-wrap">
-            Paso {{ index + 1 }}: {{ step.descripcion }}
-          </ion-label>
-        </ion-item>
+        </ion-list>
       </div>
-    </ion-content>
+    </ion-content> 
+    <ion-footer :translucent="true">
+      <ion-toolbar>
+        <ion-buttons slot="secondary">
+          <ion-button expand="block" @click="editar">Editar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
 <script lang="ts">
+import { defineComponent, ref } from "vue";
 import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonInput,
+  IonIcon,
   IonMenuButton,
   IonPage,
+  IonRadio,
+  IonRadioGroup,
   IonTitle,
   IonToolbar,
 } from "@ionic/vue";
-
 import ApiService from "@/services/ApiService";
-
-import { defineComponent } from "vue";
-
-import { ref } from "vue";
-import CacheService from "@/services/CacheService";
-
-const recipe: any = ref({});
+const sport: any = ref({});
 export default defineComponent({
   name: "Folder",
   components: {
+    IonInput,
     IonButtons,
     IonContent,
     IonHeader,
@@ -76,14 +69,22 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    const userSession: any = CacheService.user;
-    ApiService.get("recipesU/"+ userSession.uid + '/' + this.$route.params.id).then((r) => {
-      
-      recipe.value = r;
+    ApiService.get("sportList/"+this.$route.params.id).then((sports) => {
+    sport.value = sports;
     });
     return {
-      recipe,
+      sport,
     };
+  },
+  methods: {
+    editar() { 
+      ApiService.updateSportList(sport.value.id,{
+        name: sport.value.name,
+        coef: sport.value.coef
+      });
+
+      this.$router.push("/SubViews/addDeporte");
+    },
   },
 });
 </script>
@@ -121,13 +122,4 @@ ion-title {
   text-decoration: none;
   background: rgb(166, 228, 157);
 }
-
-img {
-  border-radius: 8px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
 </style>

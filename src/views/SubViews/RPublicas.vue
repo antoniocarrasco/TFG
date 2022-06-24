@@ -64,7 +64,7 @@ export default defineComponent({
   },
   data() {
       ApiService.get("recipesP").then((r) => {
-        console.log(r);
+        
         recipes.value = r;
       });
     return {

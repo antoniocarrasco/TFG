@@ -77,7 +77,7 @@ export default defineComponent({
   },
   data() {
     ApiService.get("recipesP/" + this.$route.params.id).then((r) => {
-      console.log(r);
+     
       recipe.value = r;
     });
     return {

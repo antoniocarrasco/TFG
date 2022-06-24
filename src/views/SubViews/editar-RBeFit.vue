@@ -30,7 +30,6 @@
               <input type="file" name="image" id="image" @change="upload($event)" />
             </ion-label>
           </ion-item>
-        
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
             <ion-input v-model="recipe.nombre"></ion-input>
@@ -47,14 +46,15 @@
             <ion-label position="floating">Descripción</ion-label>
             <ion-textarea v-model="recipe.descripcion"></ion-textarea>
           </ion-item>
-        <ion-item>
+          <ion-item>
             <ion-label position="floating">Pasos</ion-label>
             <ion-button slot="end" @click="addStep()"> Agregar </ion-button>
           </ion-item>
           <hr />
           <ion-item v-for="(step, index) in steps" lines="none" :key="index">
-            <ion-label position="floating">Paso {{index + 1}} </ion-label>
+            <ion-label position="floating">Paso {{ index + 1 }} </ion-label>
             <ion-textarea v-model="step.descripcion"></ion-textarea>
+            <input type="file" name="image" id="image" @change="upload($event)" />
             <ion-button slot="end" @click="removeStep(index)"> Borrar </ion-button>
           </ion-item>
         </ion-list>
@@ -80,7 +80,6 @@ import {
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import ApiService from "@/services/ApiService";
-import CacheService from "@/services/CacheService";
 
 const recipe: any = ref({});
 const steps: any = ref([]);
@@ -98,7 +97,12 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    return { recipe, steps  };
+    ApiService.get("recipes/" + this.$route.params.id).then((r) => {
+   
+      recipe.value = r;
+      steps.value = r.steps;
+    });
+    return { recipe, steps };
   },
   methods: {
     addStep() {
@@ -116,25 +120,25 @@ export default defineComponent({
           recipe.value.image = fileBase64;
         })
         .catch(() => {
-          console.log("HAY UN ERROR");
+          
         });
     },
-    crear(){
+    crear() {
+     
+      this.$router.push("/SubViews/RBeFit");
+
+      ApiService.createRecipeBeFit({
+        id: recipe.value.id,
+        nombre: recipe.value.nombre,
+        kgcal: recipe.value.kgcal,
+        tiempo: recipe.value.tiempo,
+        descripcion: recipe.value.descripcion,
+        image: recipe.value.image,
+        steps: steps.value,
+      }).then((response) => {
         
-    const userSession: any = CacheService.user;
-        const id = new Date().getTime();
-        this.$router.push('/SubViews/RUsuario');
-        
-        ApiService.updateRecipe(userSession.uid, id, {
-          id,
-          nombre: recipe.value.nombre,
-          kgcal: recipe.value.kgcal,
-          tiempo: recipe.value.tiempo,
-          descripcion: recipe.value.descripcion,
-          image: recipe.value.image,
-          steps: steps.value
-        })
-    }
+      });
+    },
   },
 });
 </script>
@@ -174,7 +178,7 @@ ion-title {
 }
 
 input {
-   background-color: #067a0c;
+  background-color: #067a0c;
   color: #fff;
   cursor: pointer;
   font-size: 18px;

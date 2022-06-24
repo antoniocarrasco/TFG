@@ -56,6 +56,14 @@
               <ion-select-option value="B">Bajo</ion-select-option>
             </ion-select>
           </ion-item>
+          <ion-item>
+            <ion-label position="floating">Objetivo</ion-label>
+            <ion-select v-model="obj" placeholder="Select One">
+              <ion-select-option value="B">Bajar de peso</ion-select-option>
+              <ion-select-option value="S">Subir de peso</ion-select-option>
+            </ion-select>
+            
+          </ion-item>
         </ion-list>
 
         <ion-button expand="block" @click="register">Registro</ion-button>
@@ -107,20 +115,19 @@ export default defineComponent({
       currentWeight:"",
       high:"",
       level:"",
+      obj:"",
     };
   },
   methods: {
     register() {
       //Validate fields
-      console.log("Login.vue", "test", this.password);
+    
 
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, this.email, this.password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("User created", userCredential, userCredential.user);
-          console.log("sex level", this.level , this.sex);
           ApiService.postUser(userCredential.user.uid, {
             name: this.name,
             age: this.age,
@@ -130,6 +137,7 @@ export default defineComponent({
             currentWeight: this.currentWeight,
             uid: userCredential.user.uid,
             email: userCredential.user.email,
+            obj: this.obj,
           }).then(() => {
             CacheService.setUser(userCredential.user)
             this.$router.push("/folder/inicio");

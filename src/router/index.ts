@@ -1,6 +1,15 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 
+const checkSession = (to: any, from: any, next: any) => {
+  const session = Object.keys(sessionStorage).find((key) =>
+    key.includes("firebase:authUser:")
+  );
+  const isLogin = session ? true : false;
+  if (to.path !== 'login' && !isLogin) next({ path: '/login' })
+  else next()
+}
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
@@ -33,6 +42,7 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Inicio',
       showMenu: true
     },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Usuario',
@@ -40,7 +50,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Usuario',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Usuario-edit',
@@ -48,7 +59,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Editar usuario',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Progreso',
@@ -56,7 +68,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Progreso',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
 
   {
@@ -65,7 +78,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Recetas',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Menusemanal',
@@ -178,6 +192,22 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/SubViews/crear-RBeFit',
+    component: () => import('../views/SubViews/crear-RBeFit.vue'),
+    meta: {
+      title: 'Crear Recetas BeFit',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/editar-RBeFit/:id',
+    component: () => import('../views/SubViews/editar-RBeFit.vue'),
+    meta: {
+      title: 'Editar Recetas BeFit',
+      showMenu: true
+    }
+  },
+  {
     path: '/SubViews/RUsuario/:id',
     component: () => import('../views/SubViews/RUsuarioDetalle.vue'),
     meta: {
@@ -203,14 +233,6 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/SubViews/listDeportes',
-    component: () => import('../views/SubViews/listDeportes.vue'),
-    meta: {
-      title: 'Deportes',
-      showMenu: true
-    }
-  },
-  {
     path: '/SubViews/listalimentos',
     component: () => import('../views/SubViews/listalimentos.vue'),
     meta: {
@@ -232,7 +254,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Alimentación diaria',
       showMenu: true,
-      url:'RUsuario'
+      url: 'RUsuario'
     }
   },
   {
@@ -241,7 +263,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Recetas Públicas',
       showMenu: true,
-      url:'RPublicas'
+      url: 'RPublicas'
     }
   },
   {
@@ -250,14 +272,14 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Recetas Públicas',
       showMenu: true,
-      url:'RPublicas'
+      url: 'RPublicas'
     }
   },
   {
-    path: '/SubViews/añadirReceta',
-    component: () => import('../views/SubViews/añadirReceta.vue'),
+    path: '/SubViews/listaUser',
+    component: () => import('../views/SubViews/listaUser.vue'),
     meta: {
-      title: 'Añadir Receta',
+      title: 'Lista de usuarios',
       showMenu: true
     }
   },
@@ -266,6 +288,30 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/SubViews/añadirDeporte.vue'),
     meta: {
       title: 'Añadir deporte',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/addDeporteList',
+    component: () => import('../views/SubViews/añadirNuevoDeporte.vue'),
+    meta: {
+      title: 'Añadir nuevo deporte',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/editDeporteList/:id',
+    component: () => import('../views/SubViews/editarNuevoDeporte.vue'),
+    meta: {
+      title: 'Editar nuevo deporte',
+      showMenu: true
+    }
+  },
+  {
+    path: '/SubViews/userListEdit/:id',
+    component: () => import('../views/SubViews/userListEdit.vue'),
+    meta: {
+      title: 'Editar usuario',
       showMenu: true
     }
   },

@@ -16,8 +16,13 @@
         </ion-toolbar>
       </ion-header>
     
-      <div id="container">
-        
+      <div id="container">   
+            <ion-label>
+              <h1>Contacta con nosotros:</h1>
+              <h2>antoniocarrasco@usal.es</h2>
+              <h2>+34 676120498</h2>
+              <a href="assets/maqueta anexo ii tfg.pdf" download="Guía de usuario BeFit"> Descargar guia de usuario</a>
+            </ion-label>
       </div>
     </ion-content>
   </ion-page>
@@ -41,6 +46,10 @@ export default {
 </script>
 
 <style scoped>
+ion-title{
+  color:#067a0c;
+  font-weight: 700;
+}
 #container {
   text-align: center;
   position: absolute;
@@ -48,29 +57,16 @@ export default {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background:  rgb(166, 228, 157);
+  background: rgb(255, 255, 255);
+}
+ion-content {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgb(255, 255, 255);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background:  rgb(166, 228, 157);
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background:  rgb(166, 228, 157);
-  margin: 0;
-}
-ion-title{
-  color:#067a0c;
-  font-weight: 700;
-}
-
-#container a {
-  text-decoration: none;
-  background:  rgb(166, 228, 157);
-}
 </style>

@@ -1,32 +1,30 @@
 import { defineComponent, h, PropType } from 'vue'
 
-import { Line } from 'vue-chartjs'
+import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
+  BarElement,
   CategoryScale,
+  LinearScale,
   Plugin
 } from 'chart.js'
 
 ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  CategoryScale
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale
 )
 
 export default defineComponent({
-  name: 'LineChart',
+  name: 'BarChart',
   components: {
-    Line
+    Bar
   },
   props: {
     labels: {
@@ -39,7 +37,7 @@ export default defineComponent({
     },
     chartId: {
       type: String,
-      default: 'line-chart'
+      default: 'bar-chart'
     },
     width: {
       type: Number,
@@ -58,7 +56,7 @@ export default defineComponent({
       // default: () => {}
     },
     plugins: {
-      type: Array as PropType<Plugin<'line'>[]>,
+      type: Array as PropType<Plugin<'bar'>[]>,
       // default: () => []
     }
   },
@@ -75,7 +73,7 @@ export default defineComponent({
     }
 
     return () =>
-      h(Line, {
+      h(Bar, {
         chartData,
         chartOptions,
         chartId: props.chartId,

@@ -19,6 +19,22 @@ class ApiService {
                 }
             });
     }
+    getIsAdmin(idUser: any) {
+        const dbRef = ref(getDatabase());
+        return get(child(dbRef, `user/${idUser}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    console.log(snapshot.val());
+                    return snapshot.val().isAdmin ? true : false;
+                } else {
+                    console.log("No data available");
+                    return false;
+                }
+            });
+        // catch((error) => {
+        //     console.error(error);
+        // });
+    }
     getUser(idUser: any) {
         const dbRef = ref(getDatabase());
         return get(child(dbRef, `user/${idUser}`))
@@ -35,7 +51,7 @@ class ApiService {
         //     console.error(error);
         // });
     }
-    getRecipesUser(idUser: any ){
+    getRecipesUser(idUser: any) {
         const dbRef = ref(getDatabase());
         return get(child(dbRef, `recipesU/${idUser}`))
             .then((snapshot) => {
@@ -64,8 +80,11 @@ class ApiService {
     updateUser(key: any, body: any) {
         return update(ref(db, `/user/${key}/`), body);
     }
-    updateRecipe(idUser: any,key: any, body: any) {
+    updateRecipe(idUser: any, key: any, body: any) {
         return update(ref(db, `/recipesU/${idUser}/${key}/`), body);
+    }
+    createRecipeBeFit(body: any) {
+        return update(ref(db, `/recipes/${body.id}`), body);
     }
     updateRecipeP(key: any, body: any) {
         return update(ref(db, `/recipesP/${key}/`), body);
@@ -76,11 +95,20 @@ class ApiService {
     start() {
         db
     }
+    postSportList(body: any) {
+        const id = new Date().getTime();
+        return set(ref(db, '/sportList/' + id), { ...body, id });
+    }
+    updateSportList(key: any, body: any) {
+        return update(ref(db, `/sportList/${key}/`), body);
+    }
 
     postSport(uid: string, body: any) {
         const date = new Date().getTime();
         return set(ref(db, '/sport/' + uid + '/' + date), { ...body, date });
     }
+
+    
     getSport(uid: string) {
         const dbRef = ref(getDatabase());
         return get(child(dbRef, `sport/${uid}`))
@@ -99,7 +127,7 @@ class ApiService {
         const date = new Date().getTime();
         return set(ref(db, '/recipesDayUser/' + uid + '/' + day + '/' + date), { ...body, date });
     }
-    getRDU(uid: string, day: any) {
+    getRDUday(uid: string, day: any) {
         const dbRef = ref(getDatabase());
         return get(child(dbRef, `recipesDayUser/${uid}/${day}`))
             .then((snapshot) => {
@@ -115,8 +143,30 @@ class ApiService {
         //     console.error(error);
         // });
     }
+    getRDU(uid: string) {
+        const dbRef = ref(getDatabase());
+        return get(child(dbRef, `recipesDayUser/${uid}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    console.log(snapshot.val());
+                    return snapshot.val();
+                } else {
+                    console.log("No data available");
+                    return false;
+                }
+            });
+        // catch((error) => {
+        //     console.error(error);
+        // });
+    }
     deleteRDU(uid: string, day: any) {
         return remove(ref(db, `/recipesDayUser/${uid}/${day}`));
+    }
+    deleteRBeFit(id: string) {
+        return remove(ref(db, `/recipes/${id}`));
+    }
+    deleteSport(id: string) {
+        return remove(ref(db, `/sportList/${id}`));
     }
 
     uploadFile(event: any) {

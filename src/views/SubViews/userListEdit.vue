@@ -15,12 +15,13 @@
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-      <div expand="full" id="container">
+
+       <div expand="full" id="container">
         <ion-title>Datos personales</ion-title>
         <ion-list>
           <ion-item>
             <ion-label>
-              <img :src="data.profile" />
+              <img :src="user.profile" />
             </ion-label>
           </ion-item>
           <ion-item>
@@ -35,13 +36,13 @@
             <ion-label>
               <h1>Nombre:</h1>
             </ion-label>
-            <h1><ion-input v-model="data.name"></ion-input></h1>
+            <h1><ion-input v-model="user.name"></ion-input></h1>
           </ion-item>
           <ion-item>
             <ion-label>
-              <h1>Sexo: {{ data.sex === "H" ? "Hombre" : "Mujer" }}</h1>
+              <h1>Sexo: {{ user.sex === "H" ? "Hombre" : "Mujer" }}</h1>
 
-              <ion-select v-model="data.sex" placeholder="Select One">
+              <ion-select v-model="user.sex" placeholder="Select One">
                 <ion-select-option value="M">Mujer</ion-select-option>
                 <ion-select-option value="H">Hombre</ion-select-option>
               </ion-select>
@@ -50,30 +51,30 @@
           <ion-item>
             <ion-label>
               <h1>Peso (KG)</h1>
-              <h1><ion-input v-model="data.currentWeight"></ion-input></h1>
+              <h1><ion-input v-model="user.currentWeight"></ion-input></h1>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
               <h1>Altura (cm)</h1>
-              <h1><ion-input v-model="data.high"></ion-input></h1>
+              <h1><ion-input v-model="user.high"></ion-input></h1>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
               <h1>Edad</h1>
-              <h1><ion-input v-model="data.age"></ion-input></h1>
+              <h1><ion-input v-model="user.age"></ion-input></h1>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
               <h1>Objetivo:
-                {{data.obj === 'S' ? 'Subir de peso' : 'Bajar de peso' }}
+                {{user.obj === 'S' ? 'Subir de peso' : 'Bajar de peso' }}
               </h1>
              
              
             
-            <ion-select v-model="data.obj" placeholder="Select One">
+            <ion-select v-model="user.obj" placeholder="Select One">
               <ion-select-option value="B">Bajar de peso</ion-select-option>
               <ion-select-option value="S">Subir de peso</ion-select-option>
             </ion-select>
@@ -83,9 +84,9 @@
             <ion-label>
               <h1>
                 Nivel de actividad física:
-                {{ data.level === "A" ? "Alto" : data.level === "M" ? "Medio" : "Bajo" }}
+                {{ user.level === "A" ? "Alto" : user.level === "M" ? "Medio" : "Bajo" }}
               </h1>
-              <ion-select v-model="data.level" placeholder="Select One">
+              <ion-select v-model="user.level" placeholder="Select One">
                 <ion-select-option value="A">Alto</ion-select-option>
                 <ion-select-option value="M">Medio</ion-select-option>
                 <ion-select-option value="B">Bajo</ion-select-option>
@@ -101,11 +102,11 @@
           </ion-item>
         </ion-list>
       </div>
-    </ion-content>
-    <ion-footer>
+    </ion-content> 
+    <ion-footer :translucent="true">
       <ion-toolbar>
         <ion-buttons slot="secondary">
-          <ion-button color="primary" @click="save()"> Guardar </ion-button>
+          <ion-button expand="block" @click="editar">Editar</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-footer>
@@ -114,44 +115,36 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import CacheService from "@/services/CacheService";
-import ApiService from "@/services/ApiService";
 import {
-  IonInput,
   IonButtons,
   IonContent,
   IonHeader,
-  IonLabel,
+  IonInput,
   IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/vue";
-
-const data: any = ref({});
-
-
+import ApiService from "@/services/ApiService";
+const user: any = ref({});
 export default defineComponent({
   name: "Folder",
   components: {
+    IonInput,
     IonButtons,
     IonContent,
     IonHeader,
-    IonInput,
     IonMenuButton,
     IonPage,
     IonTitle,
     IonToolbar,
-    IonLabel,
   },
-  setup() {
-    const userSession: any = CacheService.user;
-    ApiService.getUser(userSession.uid).then((user: any) => {
-     
-      data.value = user;
+ data() {
+    ApiService.get("user/"+this.$route.params.id).then((users) => {
+    user.value = users;
     });
     return {
-      data,
+      user,
     };
   },
   methods: {
@@ -159,16 +152,16 @@ export default defineComponent({
       
       ApiService.uploadFile(event)
         .then((fileBase64) => {
-          data.value.profile = fileBase64;
+          user.value.profile = fileBase64;
         })
         .catch(() => {
-         
+          
         });
     },
-    save() {
-      ApiService.updateUser(data.value.uid, data.value);
-      this.$router.push("/folder/usuario");
-      
+    editar() { 
+      ApiService.updateUser(user.value.uid, user.value);
+        
+      this.$router.push("/SubViews/listaUser");
     },
   },
 });
@@ -182,7 +175,7 @@ export default defineComponent({
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgb(255, 255, 255);
+  background: rgb(166, 228, 157);
 }
 
 #container strong {

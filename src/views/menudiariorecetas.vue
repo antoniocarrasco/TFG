@@ -76,23 +76,23 @@ export default defineComponent({
     recipesP.value=[];
     recipesU.value=[];
     const userSession: any = CacheService.user;
-    console.log(this.$route.meta.isUser);
+    
     ApiService.getRecipesUser(userSession.uid).then((r) => {
-      console.log('USER:',r);
+     ;
       const aux = Object.values(r).map((a: any) => {
         return { ...a, type: "USER" };
       });
       recipesU.value.push(...aux);
     });
     ApiService.get("recipesP").then((r) => {
-      console.log(r);
+      
       const aux = Object.values(r).map((a: any) => {
         return { ...a, type: "PUBLIC" };
       });
       recipesP.value.push(...aux);
     });
     ApiService.get("recipes").then((r) => {
-      console.log(r);
+      
       if (r && Array.isArray(r)) {
         const aux = r.map((a) => {
           return { ...a, type: "BFIT" };
@@ -109,7 +109,7 @@ export default defineComponent({
   methods: {
     add(recipe: any) {
       const userSession: any = CacheService.user;
-      console.log(userSession);
+      
       const day = this.$route.params.day;
       ApiService.postRDU(userSession.uid, day, {
         ...recipe,

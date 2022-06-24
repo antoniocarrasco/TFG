@@ -2,70 +2,68 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
+        <ion-buttons slot ="start">
+          <ion-menu-button color="primary"></ion-menu-button> 
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
       </ion-toolbar>
     </ion-header>
-
+    
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-
+    
       <div id="container">
-        <ion-list>
-          <ion-item
-            @click="goTo('/SubViews/' + $route.meta.url + '/' + recipe.id)"
-            v-for="recipe in recipes"
-            :key="recipe"
-          >
-            <ion-label>
-              {{ recipe.nombre + "   " + "(Contiene " + recipe.kgcal + " kcal)" }}
-              {{ recipes.id }}
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </div>
-    </ion-content>
-    <ion-footer :translucent="true" v-if="isAdmin">
+        
+        <ion-item>TRAER LISTA USUARIO CON RADIO BUTTON</ion-item>
+        <ion-item v-for="(u, index) in userList" lines="none" :key="index">
+              <ion-label>{{ u.name }} {{  }} </ion-label>
+              <ion-radio slot="start" :value="u.coef"></ion-radio>
+              <ion-button @click="goTo('/SubViews/userListEdit/'+ u.uid)" color="primary"  expand="block">
+                <ion-icon slot="icon-only" :ios="pencil" :md="pencil"></ion-icon>
+              </ion-button>
+              <ion-button @click="deleteUser(u.uid)" color="primary" expand="block">
+                <ion-icon slot="icon-only" :ios="trash" :md="trash"></ion-icon>
+              </ion-button>
+            </ion-item>
+        <ion-footer>
       <ion-toolbar>
         <ion-buttons slot="secondary">
-          <ion-button color="primary" expand="block" @click="goTo('/SubViews/crear-RBeFit')">Añadir</ion-button>
+          <ion-button color="primary" @click="goTo('/folder/Usuario-edit')">
+            AÑADIR
+          </ion-button>         
         </ion-buttons>
-        
       </ion-toolbar>
     </ion-footer>
+      </div>
+    </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
+<script lang="ts">import { defineComponent, ref } from "vue";
 import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonMenuButton,
   IonPage,
+  IonRadio,
   IonTitle,
   IonToolbar,
 } from "@ionic/vue";
-
+import { pencil, trash } from "ionicons/icons";
 import ApiService from "@/services/ApiService";
 
-import { defineComponent } from "vue";
-
-import { ref } from "vue";
-import CacheService from "@/services/CacheService";
-
-const isAdmin = ref();
-
-const recipes: any = ref([]);
+const userList: any = ref([]);
 export default defineComponent({
   name: "Folder",
   components: {
+    IonRadio,
+    IonIcon,
     IonButtons,
     IonContent,
     IonHeader,
@@ -75,32 +73,27 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    setTimeout(() => {
-      isAdmin.value = CacheService.isAdmin;
-    }, 1000);
-    if (this.$route.meta.isUser) {
-      const userSession: any = CacheService.user;
-      
-      ApiService.getRecipesUser(userSession.uid).then((r) => {
-        
-        recipes.value = r;
-        isAdmin.value = CacheService.isAdmin;
-      });
-    } else {
-      ApiService.get("recipes").then((r) => {
-        
-        recipes.value = r;
-        isAdmin.value = CacheService.isAdmin;
-      });
-    }
+    
+    ApiService.get("user").then((users) => {
+      userList.value = users;
+    });
     return {
-      isAdmin,
-      recipes,
+      userList,
+      pencil,
+      trash,
     };
   },
   methods: {
     goTo(url: string) {
       this.$router.push(url);
+    },
+    deleteUser(index: any) {
+      ApiService.deleteUser(index).then((response) => {
+        ApiService.get("user").then((users) => {
+          
+          userList.value = users;
+        });
+      });
     },
   },
 });

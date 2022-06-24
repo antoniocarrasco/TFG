@@ -20,7 +20,7 @@
         <ion-list>
           <ion-item>
             <ion-label>
-              <img :src="data.profile" />
+              <img  :src="data.profile" />
             </ion-label>
           </ion-item>
           <ion-item>
@@ -57,14 +57,25 @@
           </ion-item>
           <ion-item>
             <ion-label>
+              <h1>Objetivo</h1>
+              <h2>{{data.obj === 'S' ? 'Subir de peso' : 'Bajar de peso' }}</h2> 
+             </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
               <h1>Nivel de actividad física</h1>
               <h2>{{data.level === 'A' ? 'Alto' : data.level === 'M' ? 'Medio' : 'Bajo'}}</h2>
              </ion-label>
           </ion-item>
-           
+           <ion-item v-if="isAdmin">
+            <ion-label @click="goTo('/SubViews/listaUser')" >
+              <h1 >Lista de usuarios</h1>
+             </ion-label>
+          </ion-item>
         </ion-list>
       </div>
     </ion-content>
+   
     <ion-footer>
       <ion-toolbar>
         <ion-buttons slot="secondary">
@@ -80,6 +91,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import CacheService from "@/services/CacheService";
+const isAdmin = ref();
 import ApiService from "@/services/ApiService";
 import {
   IonButtons,
@@ -94,7 +106,7 @@ import {
 
 const data: any = ref({});
 
-console.log(CacheService.user);
+
 export default defineComponent({
   name: "Folder",
   components: {
@@ -108,13 +120,18 @@ export default defineComponent({
     IonLabel, 
   },
   setup() {
+    setTimeout(() => {
+      isAdmin.value = CacheService.isAdmin;
+    }, 1000);
     const userSession: any = CacheService.user;
     ApiService.getUser(userSession.uid).then((user: any) => {
-      console.log("user", user);
+      
       data.value = user;
+      isAdmin.value = CacheService.isAdmin;
     });
     return {
       data,
+      isAdmin,
     };
   },
   methods:{
@@ -136,19 +153,6 @@ export default defineComponent({
   background: rgb(255, 255, 255);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(166, 228, 157);
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(166, 228, 157);
-  margin: 0;
-}
 ion-title {
   color: #067a0c;
   font-weight: 700;
@@ -157,5 +161,12 @@ ion-title {
 #container a {
   text-decoration: none;
   background: rgb(166, 228, 157);
+}
+img{
+    width:300px;
+    height:300px;
+    border-radius:150px;
+    display:block;
+    margin:auto;
 }
 </style>

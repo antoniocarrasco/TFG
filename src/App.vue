@@ -90,7 +90,7 @@ export default defineComponent({
     IonSplitPane,
   },
   data() {
-    console.log("START");
+    
     //obtencion de UID
     const session = Object.keys(sessionStorage).find((key) =>
       key.includes("firebase:authUser:")

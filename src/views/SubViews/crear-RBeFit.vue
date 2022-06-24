@@ -18,19 +18,21 @@
       <div expand="full" id="container">
         <ion-list>
           <ion-item>
-            <ion-label>
-              <img :src="recipe.image" />
-            </ion-label>
+            <ion-label> <img :src="recipe.image" /></ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
               <ion-label>
                 <h1>Foto</h1>
               </ion-label>
-              <input type="file" name="image" id="image" @change="upload($event)" />
+              <input
+                type="file"
+                name="image"
+                id="image"
+                @change="upload($event, 'recipe')"
+              />
             </ion-label>
           </ion-item>
-        
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
             <ion-input v-model="recipe.nombre"></ion-input>
@@ -47,14 +49,16 @@
             <ion-label position="floating">Descripción</ion-label>
             <ion-textarea v-model="recipe.descripcion"></ion-textarea>
           </ion-item>
-        <ion-item>
+          <ion-item>
             <ion-label position="floating">Pasos</ion-label>
             <ion-button slot="end" @click="addStep()"> Agregar </ion-button>
           </ion-item>
           <hr />
           <ion-item v-for="(step, index) in steps" lines="none" :key="index">
-            <ion-label position="floating">Paso {{index + 1}} </ion-label>
+            <ion-label position="floating">Paso {{ index + 1 }} </ion-label>
             <ion-textarea v-model="step.descripcion"></ion-textarea>
+            <img :src="step.image" />
+            <input type="file" name="image" id="image" @change="upload($event, index)" />
             <ion-button slot="end" @click="removeStep(index)"> Borrar </ion-button>
           </ion-item>
         </ion-list>
@@ -80,7 +84,6 @@ import {
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import ApiService from "@/services/ApiService";
-import CacheService from "@/services/CacheService";
 
 const recipe: any = ref({});
 const steps: any = ref([]);
@@ -98,7 +101,7 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-    return { recipe, steps  };
+    return { recipe, steps };
   },
   methods: {
     addStep() {
@@ -110,31 +113,36 @@ export default defineComponent({
     goTo(url: string) {
       this.$router.push(url);
     },
-    upload(event: any) {
+    upload(event: any, imagen: any) {
       ApiService.uploadFile(event)
         .then((fileBase64) => {
-          recipe.value.image = fileBase64;
+          if (imagen === "recipe") {
+            recipe.value.image = fileBase64;
+          } else{
+            steps.value[imagen].image=fileBase64
+          }
         })
         .catch(() => {
-          console.log("HAY UN ERROR");
+         
         });
     },
-    crear(){
+    crear() {
+     
+      const id = new Date().getTime();
+      this.$router.push("/SubViews/RBeFit");
+
+      ApiService.createRecipeBeFit({
+        id,
+        nombre: recipe.value.nombre,
+        kgcal: recipe.value.kgcal,
+        tiempo: recipe.value.tiempo,
+        descripcion: recipe.value.descripcion,
+        image: recipe.value.image,
+        steps: steps.value,
+      }).then((response) => {
         
-    const userSession: any = CacheService.user;
-        const id = new Date().getTime();
-        this.$router.push('/SubViews/RUsuario');
-        
-        ApiService.updateRecipe(userSession.uid, id, {
-          id,
-          nombre: recipe.value.nombre,
-          kgcal: recipe.value.kgcal,
-          tiempo: recipe.value.tiempo,
-          descripcion: recipe.value.descripcion,
-          image: recipe.value.image,
-          steps: steps.value
-        })
-    }
+      });
+    },
   },
 });
 </script>
@@ -174,7 +182,7 @@ ion-title {
 }
 
 input {
-   background-color: #067a0c;
+  background-color: #067a0c;
   color: #fff;
   cursor: pointer;
   font-size: 18px;

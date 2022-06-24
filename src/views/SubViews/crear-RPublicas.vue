@@ -114,11 +114,11 @@ export default defineComponent({
           recipe.value.image = fileBase64;
         })
         .catch(() => {
-          console.log("HAY UN ERROR");
+          
         });
     },
     crear() {
-      console.log(recipe.value);
+      
       const id = new Date().getTime();
       this.$router.push("/SubViews/RPublicas");
 

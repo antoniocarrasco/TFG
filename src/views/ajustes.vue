@@ -17,19 +17,32 @@
       </ion-header>
     
       <div id="container">
-        
+        <ion-item @click="logOut()">
+            <ion-label>
+              <h1>Log Out</h1><!-- Borrar usuario del log y devolver a página login-->
+              
+            </ion-label>
+          </ion-item>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
+import { defineComponent, ref } from "vue";
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 
-export default {
+export default defineComponent({
   name: 'Ajustes',
   mounted() {  
     document.title = "page title";  
+  },
+  methods:{
+    
+    logOut() {
+      sessionStorage.clear();
+      this.$router.push('/login');
+    },
   },
   
   components: {
@@ -43,7 +56,7 @@ export default {
   }
 
   
-}
+})
 </script>
 
 <style scoped>

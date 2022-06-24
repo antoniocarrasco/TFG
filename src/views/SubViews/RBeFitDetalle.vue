@@ -17,7 +17,7 @@
       </ion-header>
 
       <div id="container">
-         <ion-item>
+        <ion-item>
           <ion-label>
             <img :src="recipe.image" />
           </ion-label>
@@ -29,7 +29,7 @@
           </ion-card-header>
 
           <ion-card-content>
-            {{ 'Tiempo: ' + recipe.tiempo + ' mins'}}
+            {{ "Tiempo: " + recipe.tiempo + " mins" }}
           </ion-card-content>
         </ion-card>
         <ion-item>
@@ -38,10 +38,26 @@
         <ion-item v-for="(step, index) in recipe.steps" lines="none" :key="index">
           <ion-label class="ion-text-wrap">
             Paso {{ index + 1 }}: {{ step.descripcion }}
+            <img :src="step.image" />
           </ion-label>
         </ion-item>
       </div>
     </ion-content>
+    <ion-footer :translucent="true" v-if="isAdmin">
+      <ion-toolbar>
+        <ion-buttons slot="secondary">
+          <ion-button
+            color="primary"
+            expand="block"
+            @click="goTo('/SubViews/editar-RBeFit/' + recipe.id)"
+            >MODIFICAR</ion-button
+          >
+          <ion-button color="primary" expand="block" @click="deleteRBeFit()">
+            ELIMINAR
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
@@ -61,7 +77,8 @@ import ApiService from "@/services/ApiService";
 import { defineComponent } from "vue";
 
 import { ref } from "vue";
-
+import CacheService from "@/services/CacheService";
+const isAdmin = ref();
 const recipe: any = ref({});
 export default defineComponent({
   name: "Folder",
@@ -75,21 +92,33 @@ export default defineComponent({
     IonToolbar,
   },
   data() {
-      
     if (this.$route.meta.isUser) {
-    ApiService.get("recipesU/" + this.$route.params.id).then((r) => {
-      console.log(r);
-      recipe.value = r;
-    });
-    }else{
-    ApiService.get("recipes/" + this.$route.params.id).then((r) => {
-      console.log(r);
-      recipe.value = r;
-    });
+      ApiService.get("recipesU/" + this.$route.params.id).then((r) => {
+      
+        recipe.value = r;
+        isAdmin.value = CacheService.isAdmin;
+      });
+    } else {
+      ApiService.get("recipes/" + this.$route.params.id).then((r) => {
+        
+        recipe.value = r;
+        isAdmin.value = CacheService.isAdmin;
+      });
     }
     return {
       recipe,
+      isAdmin,
     };
+  },
+  methods: {
+    goTo(url: string) {
+      this.$router.push(url);
+    },
+    deleteRBeFit() {
+      ApiService.deleteRBeFit(recipe.value.id).then((response) => {
+        this.$router.push("/SubViews/RBeFit");
+      });
+    },
   },
 });
 </script>

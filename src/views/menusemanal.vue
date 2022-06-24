@@ -18,13 +18,14 @@
 
       <div id="container">
         <ion-list>SEMANA
-        <ion-item @click="goTo('/folder/menusemanal/1')">LUNES</ion-item>
-        <ion-item @click="goTo('/folder/menusemanal/2')">MARTES</ion-item>
-        <ion-item @click="goTo('/folder/menusemanal/3')">MIERCOLES</ion-item>
-        <ion-item @click="goTo('/folder/menusemanal/4')">JUEVES</ion-item>
-        <ion-item @click="goTo('/folder/menusemanal/5')">VIERNES</ion-item>
-        <ion-item @click="goTo('/folder/menusemanal/6')">SABADO</ion-item>
-        <ion-item @click="goTo('/folder/menusemanal/0')">DOMINGO</ion-item></ion-list>
+          <ion-item @click="goTo('/folder/menusemanal/1')">LUNES</ion-item>
+          <ion-item @click="goTo('/folder/menusemanal/2')">MARTES</ion-item>
+          <ion-item @click="goTo('/folder/menusemanal/3')">MIERCOLES</ion-item>
+          <ion-item @click="goTo('/folder/menusemanal/4')">JUEVES</ion-item>
+          <ion-item @click="goTo('/folder/menusemanal/5')">VIERNES</ion-item>
+          <ion-item @click="goTo('/folder/menusemanal/6')">SABADO</ion-item>
+          <ion-item @click="goTo('/folder/menusemanal/0')">DOMINGO</ion-item>
+        </ion-list>
         
       </div>
     </ion-content>
@@ -68,31 +69,28 @@ export default defineComponent({
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
+  top: 30%;
   transform: translateY(-50%);
   background: rgb(166, 228, 157);
+
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(166, 228, 157);
+ion-item {
+  color: #067a0c;
+  font-weight: 530;
+  background-color: #067a0c;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(166, 228, 157);
-  margin: 0;
+ion-list{
+  color: #067a0c;
+  font-weight: 700;
 }
+
+
+
 ion-title {
   color: #067a0c;
   font-weight: 700;
 }
 
-#container a {
-  text-decoration: none;
-  background: rgb(166, 228, 157);
-}
 </style>

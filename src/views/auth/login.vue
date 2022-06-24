@@ -18,17 +18,22 @@
           <ion-label position="floating">Email</ion-label>
           <ion-input v-model="email"></ion-input>
         </ion-item>
-
         <ion-item>
           <ion-label position="floating">Password</ion-label>
           <ion-input type="password" v-model="password"></ion-input>
         </ion-item>
-
         <ion-button expand="block" @click="login">Login</ion-button>
+        
+        <ion-item>
+          <ion-label router-link ="/register">No estoy registrado</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label router-link ="/login">He olvidado mi contraseña</ion-label>
+        </ion-item>
+        
+        
 
-        <p>
-          <ion-item router-link="/register"> No estoy registrado. </ion-item>
-        </p>
+            
       </div>
     </ion-content>
   </ion-page>
@@ -76,7 +81,7 @@ export default defineComponent({
   methods: {
     login() {
       //Validate fields
-      console.log("login", this.email, this.password);
+      
       const auth = getAuth();
       setPersistence(auth, browserSessionPersistence)
         .then(() => {
@@ -86,7 +91,7 @@ export default defineComponent({
               const user = userCredential.user;
               CacheService.setUser(user);
               this.$router.push("/folder/inicio");
-              console.log("User logeado");
+              
             })
             .catch((error) => {
               this.$router.push("/register");
@@ -104,3 +109,49 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+#container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30%;
+  transform: translateY(-50%);
+  background:  rgb(255, 255, 255);
+}
+
+#container p{
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 130%;
+  transform: translateY(-50%);
+  background:  rgb(255, 255, 255);
+  color:#067a0c;
+  font-weight: 500;
+  text-align: center;
+  position: absolute;
+  opacity: 0.9;
+}
+h4 {
+    color:#067a0c;
+  font-weight: 500;
+}
+ion-title{
+  color:#067a0c;
+  font-weight: 700;
+  text-align: center;
+  position: absolute;
+}
+ion-item {
+  background-color: #ffffff;
+}
+
+
+
+#container a {
+  text-decoration: none;
+  background:  rgb(166, 228, 157);
+}
+</style>
