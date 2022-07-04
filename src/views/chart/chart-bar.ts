@@ -19,7 +19,7 @@ ChartJS.register(
     BarElement,
     CategoryScale,
     LinearScale
-)
+) 
 
 export default defineComponent({
   name: 'BarChart',

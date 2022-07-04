@@ -9,6 +9,10 @@ class CacheService {
             this.isAdmin = isAdmin;
         });
     }
+    setSession(session: any) {
+        this.user = session;
+        localStorage.setItem('SESSION', JSON.stringify(session))
+    }
 }
 
 export default new CacheService();

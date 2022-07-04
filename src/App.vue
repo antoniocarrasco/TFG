@@ -1,25 +1,26 @@
 <template>
   <IonApp>
-    <IonSplitPane content-id="main-content">
-      <ion-menu content-id="main-content" type="overlay" v-show="$route.meta.showMenu">
-        <ion-content>
-          <ion-list id="BeFit-list">
-            <ion-list-header>BeFit</ion-list-header>
+    <IonSplitPane class="bg-green" content-id="main-content">
+      <ion-menu  content-id="main-content" type="overlay" v-show="$route.meta.showMenu">
+        <ion-content class="bg-green">
+          <ion-list class="bg-green" id="BeFit-list">
+            <ion-list-header class="bg-green" style="display: flex">BeFit <div style="width:100%"></div>
+          <img src="assets/logo fondo blanco.png" height="60" /></ion-list-header>
 
-            <ion-note></ion-note>
+            <ion-note class="bg-green"></ion-note>
 
-            <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
-              <ion-item
+            <ion-menu-toggle class="bg-green" auto-hide="false" v-for="(p, i) in appPages" :key="i">
+              <ion-item 
                 @click="selectedIndex = i"
                 router-direction="root"
                 :router-link="p.url"
                 lines="none"
                 detail="false"
-                class="hydrated"
+                class="hydrated bg-green"
                 :class="{ selected: selectedIndex === i }"
               >
-                <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
+                <ion-icon  slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
+                <ion-label >{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           </ion-list>
@@ -92,12 +93,10 @@ export default defineComponent({
   data() {
     
     //obtencion de UID
-    const session = Object.keys(sessionStorage).find((key) =>
-      key.includes("firebase:authUser:")
-    );
-    if (session) {
-      const userSession = sessionStorage.getItem(session ? session : "");
-      const user = JSON.parse(userSession ? userSession : "");
+    const session = localStorage.getItem('SESSION');
+    if (session) { 
+      console.log(session)
+      const user = JSON.parse(session ? session : "{}");
       CacheService.setUser(user);
     }
     ApiService.start();

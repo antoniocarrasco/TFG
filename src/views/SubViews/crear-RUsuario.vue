@@ -30,11 +30,16 @@
               <ion-label class="bg-green">
                 <h1>Foto</h1>
               </ion-label>
-              <input type="file" name="image" id="image" @change="upload($event, 'recipeU')" />
+              <input
+                type="file"
+                name="image"
+                id="image"
+                @change="upload($event, 'recipe')"
+              />
             </ion-label>
           </ion-item>
           <ion-item class="bg-green">
-            <ion-label  class="bg-green" position="floating">Nombre</ion-label>
+            <ion-label class="bg-green" position="floating">Nombre</ion-label>
             <ion-input v-model="recipe.nombre"></ion-input>
           </ion-item>
           <ion-item class="bg-green">
@@ -54,8 +59,15 @@
             <ion-button slot="end" @click="addStep()"> Agregar </ion-button>
           </ion-item>
           <hr />
-          <ion-item class="bg-green" v-for="(step, index) in steps" lines="none" :key="index">
-            <ion-label class="bg-green" position="floating">Paso {{index + 1}} </ion-label>
+          <ion-item
+            class="bg-green"
+            v-for="(step, index) in steps"
+            lines="none"
+            :key="index"
+          >
+            <ion-label class="bg-green" position="floating"
+              >Paso {{ index + 1 }}
+            </ion-label>
             <ion-textarea v-model="step.descripcion"></ion-textarea>
             <img class="imgCard" :src="step.image" />
             <input type="file" name="image" id="image" @change="upload($event, index)" />
@@ -84,6 +96,7 @@ import {
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import ApiService from "@/services/ApiService";
+import CacheService from "@/services/CacheService";
 
 const recipe: any = ref({});
 const steps: any = ref([]);
@@ -118,26 +131,30 @@ export default defineComponent({
         .then((fileBase64) => {
           if (imagen === "recipe") {
             recipe.value.image = fileBase64;
-          } else{
-            steps.value[imagen].image=fileBase64
+          } else {
+            steps.value[imagen].image = fileBase64;
           }
         })
         .catch(() => {
-         console.log("")
+          console.log("");
         });
     },
     crear() {
       const id = new Date().getTime();
-      this.$router.push("/SubViews/RPublicas");
 
-      ApiService.updateRecipeP(id, {
+      const userSession: any = CacheService.user;
+      console.log(recipe.value);
+      ApiService.updateRecipeU(id,
+        userSession.uid, {
         id,
         nombre: recipe.value.nombre,
         kgcal: recipe.value.kgcal,
         tiempo: recipe.value.tiempo,
         descripcion: recipe.value.descripcion,
         image: recipe.value.image,
-        steps: steps.value
+        steps: steps.value,
+      }).then(() => {
+        this.$router.push("/SubViews/RUsuario");
       });
     },
   },
@@ -145,10 +162,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
-
+ion-title {
+  color: rgb(214, 248, 209);
+  font-weight: 700;
+}
 input {
-   background-color: #067a0c;
+  background-color: #067a0c;
   color: #fff;
   cursor: pointer;
   font-size: 18px;
@@ -168,10 +187,5 @@ input {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
-}
-
-ion-title {
-  color: rgb(214, 248, 209);
-  font-weight: 700;
 }
 </style>

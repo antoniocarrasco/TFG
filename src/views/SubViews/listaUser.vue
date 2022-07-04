@@ -1,22 +1,24 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot ="start">
-          <ion-menu-button color="primary"></ion-menu-button> 
+    <ion-header :translucent="true" class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="start" class="bg-dark-green">
+          <ion-menu-button color="secondary" class="bg-dark-green"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-buttons slot="end" class="bg-dark-green">
+           <img src="assets/logofondoverde.png" height="60" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-    
-      <div id="container">
+      <div expand="full" id="container">
         
         <ion-item>TRAER LISTA USUARIO CON RADIO BUTTON</ion-item>
         <ion-item v-for="(u, index) in userList" lines="none" :key="index">
@@ -100,36 +102,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(166, 228, 157);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(166, 228, 157);
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(166, 228, 157);
-  margin: 0;
-}
 ion-title {
-  color: #067a0c;
+  color: rgb(214, 248, 209);
   font-weight: 700;
-}
-
-#container a {
-  text-decoration: none;
-  background: rgb(166, 228, 157);
 }
 </style>

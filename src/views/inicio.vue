@@ -1,11 +1,14 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
+    <ion-header :translucent="true" class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="start" class="bg-dark-green">
+          <ion-menu-button color="secondary" class="bg-dark-green"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-buttons slot="end" class="bg-dark-green">
+           <img src="assets/logofondoverde.png" height="60" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -15,26 +18,25 @@
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <div id="container">
-        <ion-item>GRAFICO RESUMEN</ion-item>
+      <div expand="full" id="container">
+        <center>GRAFICO RESUMEN</center>
         
-        <ChartBar
+        <ChartBar class="bg-green"
           v-if="chart.labels.length > 0"
           :labels="chart.labels"
           :datasets="chart.datasets"
         ></ChartBar>
        
         
-        <ion-item @click="goTo('/SubViews/addDeporte')"
-          >Añadir deporte</ion-item
-        >
-        <ion-item>RESUMEN </ion-item>
-        <ion-item>KCAL Objetivo: 2000 KCAL</ion-item>
-        <ion-item>KCAL Actuales: {{ comida - sports }} KCAL</ion-item>
-        <ion-item>KCAL Deporte: {{ sports }} KCAL</ion-item>
-        <ion-item>KCAL Consumidas: {{ comida }} KCAL</ion-item>
+        
+        
+        <ion-item class="bg-green">Objetivo de calorias finales: 2200 KCAL</ion-item>
+        <ion-item class="bg-green">Calorias actuales: {{ comida - sports }} KCAL</ion-item>
+        <ion-item class="bg-green">Calorias gastadas: {{ sports }} KCAL</ion-item>
+        <ion-item class="bg-green">Calorias consumidas: {{ comida }} KCAL</ion-item>
       
+      <ion-button class="bg-blue" @click="goTo('/SubViews/addDeporte')">AÑADIR DEPORTE</ion-button>
+     
       </div>
     </ion-content>
   </ion-page>
@@ -75,6 +77,15 @@ export default defineComponent({
   },
   data() {
     const user: any = CacheService.user;
+
+ 
+    console.log(user);
+    ApiService.getUser(user.uid).then((info: any) => {
+      if(!info){
+      this.$router.push('/folder/Usuario-edit');
+      }
+    });
+
     ApiService.getSport(user.uid)
       .then((s) => {
         return Object.values(s)
@@ -120,7 +131,7 @@ export default defineComponent({
         },
         {
           label: 'Deporte',
-          backgroundColor: '#0D52E7',
+          backgroundColor: '#68C9F3',
           data: [-sports.value]
         },
         {
@@ -145,46 +156,19 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(255, 255, 255);
-}
-content {
- 
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(214, 248, 209);
-}
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(255, 255, 255);
-}
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(255, 255, 255);
-  margin: 0;
-}
+
 ion-title {
+  color: rgb(214, 248, 209);
+  font-weight: 700;
+}
+center {
+  margin: 30px;
+  font-size: 25px;
+  line-height: 22px;
   color: #067a0c;
   font-weight: 700;
 }
 
-#container a {
-  text-decoration: none;
-  background: rgb(255, 255, 255);
-}
 </style>

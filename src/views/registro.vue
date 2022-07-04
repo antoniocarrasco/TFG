@@ -1,11 +1,14 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
+    <ion-header :translucent="true" class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="start" class="bg-dark-green">
+          <ion-menu-button color="secondary" class="bg-dark-green"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-buttons slot="end" class="bg-dark-green">
+           <img src="assets/logofondoverde.png" height="60" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -15,10 +18,9 @@
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <div id="container">
-        <ion-item>Calorias semanales</ion-item>
-        <ChartBar
+      <div expand="full" id="container">
+        <center>Calorias semanales</center>
+        <ChartBar class="bg-green"
           v-if="chart.labels.length > 0"
           :labels="chart.labels"
           :datasets="chart.datasets"
@@ -104,11 +106,11 @@ export default defineComponent({
               {
                 label: "Objetivo",
                 backgroundColor: "#bb1119",
-                data: new Array(7).fill(2000),
+                data: new Array(7).fill(2200),
               },
               {
                 label: "Deporte",
-                backgroundColor: "#0D52E7",
+                backgroundColor: '#68C9F3',
                 data: sports.value,
               },
               {
@@ -130,37 +132,18 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(255, 255, 255);
-}
+<style scoped> 
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(255, 255, 255);
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(255, 255, 255);
-  margin: 0;
-}
 ion-title {
+  color: rgb(214, 248, 209);
+  font-weight: 700;
+}
+center {
+  margin: 30px;
+  font-size: 25px;
+  line-height: 22px;
   color: #067a0c;
   font-weight: 700;
 }
 
-#container a {
-  text-decoration: none;
-  background: rgb(255, 255, 255);
-}
 </style>

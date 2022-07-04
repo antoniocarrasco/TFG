@@ -1,11 +1,14 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
+    <ion-header :translucent="true" class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="start" class="bg-dark-green">
+          <ion-menu-button color="secondary" class="bg-dark-green"></ion-menu-button>
         </ion-buttons>
-        <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-title>{{ $route.meta.title }} {{ recipe.nombre }} </ion-title>
+        <ion-buttons slot="end" class="bg-dark-green">
+           <img src="assets/logofondoverde.png" height="60" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -15,29 +18,28 @@
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <div id="container">
+      <div expand="full" id="container">
         <ion-item>
           <ion-label>
-            <img :src="recipe.image" />
+            <img class="imgCard" :src="recipe.image" />
           </ion-label>
         </ion-item>
         <ion-card>
           <ion-card-header>
-            <ion-card-subtitle>Kcal totales: {{ recipe.kgcal }}</ion-card-subtitle>
-            <ion-card-title>{{ recipe.nombre }}</ion-card-title>
-          </ion-card-header>
-
-          <ion-card-content>
-            {{ 'Tiempo: ' + recipe.tiempo + ' mins'}}
+            <ion-card-title class="bg-green">{{ recipe.nombre }}</ion-card-title>
+            <ion-card-subtitle class="bg-green">Kcal totales: {{ recipe.kgcal }} KCal</ion-card-subtitle>
+            <ion-card-content class="bg-green">
+            {{ "Tiempo: " + recipe.tiempo + " mins" }}
           </ion-card-content>
+          </ion-card-header>
         </ion-card>
-        <ion-item>
-          <ion-label class="ion-text-wrap"> Pasos </ion-label>
+        <ion-item class="bg-green">
+          <ion-label class="ion-text-wrap"> Pasos a seguir: </ion-label>
         </ion-item>
-        <ion-item v-for="(step, index) in recipe.steps" lines="none" :key="index">
+        <ion-item class="bg-green" v-for="(step, index) in recipe.steps" lines="none" :key="index">
           <ion-label class="ion-text-wrap">
             Paso {{ index + 1 }}: {{ step.descripcion }}
+            <img class="imgCard" :src="step.image" />
           </ion-label>
         </ion-item>
       </div>
@@ -89,40 +91,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(166, 228, 157);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(166, 228, 157);
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(166, 228, 157);
-  margin: 0;
-}
 ion-title {
-  color: #067a0c;
+  color: rgb(214, 248, 209);
   font-weight: 700;
 }
 
-#container a {
-  text-decoration: none;
-  background: rgb(166, 228, 157);
-}
-
-img {
+.imgCard {
   border-radius: 8px;
   display: block;
   margin-left: auto;

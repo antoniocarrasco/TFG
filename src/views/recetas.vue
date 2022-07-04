@@ -1,11 +1,14 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
+    <ion-header :translucent="true" class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="start" class="bg-dark-green">
+          <ion-menu-button color="secondary" class="bg-dark-green"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-buttons slot="end" class="bg-dark-green">
+           <img src="assets/logofondoverde.png" height="60" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -15,30 +18,29 @@
           <ion-title size="large">{{ $route.meta.title }}</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <div id="container">
+      <div expand="full" id="container">
         <ion-card @click="goTo('/SubViews/comidasDia')">
-          <img src="../../public/assets/comida2.jpg" />
+          <img class="imgCard" src="../../public/assets/comida2.jpg" />
           <ion-card-header>
             <ion-card-title>RECETAS DE USUARIO</ion-card-title>
           </ion-card-header>
-          <ion-card-content> Listado de recetas personales del usuario. </ion-card-content>
+          <ion-card-content> Listado de recetas personales del usuario </ion-card-content>
         </ion-card>
         <ion-card @click="goTo('/SubViews/comidasDiaP')">
-          <img src="../../public/assets/pasta.jpg" />
+          <img class="imgCard" src="../../public/assets/pasta.jpg" />
           <ion-card-header>
             <ion-card-title>RECETAS PUBLICAS</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            Listado de recetas de usuarios que las comparten publicamente.
+            Listado de recetas de usuarios que las comparten publicamente
           </ion-card-content>
         </ion-card>
         <ion-card @click="goTo('/SubViews/RBeFit')">
-          <img src="../../public/assets/comida3.jpeg" />
+          <img class="imgCard" src="../../public/assets/comida3.jpeg" />
           <ion-card-header>
             <ion-card-title>RECETAS BEFIT</ion-card-title>
           </ion-card-header>
-          <ion-card-content> Listado de recetas propias de la aplicación. </ion-card-content>
+          <ion-card-content> Listado de recetas propias de la aplicación </ion-card-content>
         </ion-card>
       </div>
     </ion-content>
@@ -79,33 +81,21 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(214, 248, 209);
-}
+<style scoped> 
 
 ion-title {
-  color: #067a0c;
+  color: rgb(214, 248, 209);
   font-weight: 700;
 }
 
-#container a {
-  text-decoration: none;
-  background:  rgb(255, 255, 255);
-}
+
 ion-card {
   border: #8c8c8c;
   background: rgb(255, 255, 255);
   text-decoration-color: black;
 }
 
-img {
+.imgCard {
   border-radius: 8px;
   display: block;
   margin-left: auto;

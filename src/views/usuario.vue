@@ -1,11 +1,14 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
+    <ion-header :translucent="true" class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="start" class="bg-dark-green">
+          <ion-menu-button color="secondary" class="bg-dark-green"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-buttons slot="end" class="bg-dark-green">
+           <img  src="assets/logofondoverde.png" height="60" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -16,59 +19,59 @@
         </ion-toolbar>
       </ion-header>
       <div expand="full" id="container">
-        <ion-title>Datos personales</ion-title>
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <img  :src="data.profile" />
+        
+        <ion-list class="bg-green">
+          <ion-item class="bg-green" style="padding: 0">
+            <ion-label class="bg-green">
+              <img class="imgPerfil" :src="data.profile" />
             </ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green">
               <h1>Nombre</h1>
               <h2>{{data.name}}</h2>
             </ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green">
               <h1>Sexo</h1>
               <h2>{{data.sex === 'H' ? 'Hombre' : 'Mujer' }}</h2>
               </ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green">
               <h1>Peso (KG)</h1>
               <h2>{{ data.currentWeight}}</h2>
             </ion-label>
             
           </ion-item>
-          <ion-item>
-            <ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green">
               <h1>Altura (cm)</h1>
               <h2>{{data.high}}</h2>
             </ion-label>
             
           </ion-item>
-          <ion-item>
-            <ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green">
               <h1>Edad</h1>
               <h2>{{data.age }}</h2>
              </ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green">
               <h1>Objetivo</h1>
               <h2>{{data.obj === 'S' ? 'Subir de peso' : 'Bajar de peso' }}</h2> 
              </ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green">
               <h1>Nivel de actividad física</h1>
               <h2>{{data.level === 'A' ? 'Alto' : data.level === 'M' ? 'Medio' : 'Bajo'}}</h2>
              </ion-label>
           </ion-item>
-           <ion-item v-if="isAdmin">
-            <ion-label @click="goTo('/SubViews/listaUser')" >
+           <ion-item v-if="isAdmin" class="bg-green">
+            <ion-label class="bg-green" @click="goTo('/SubViews/listaUser')" >
               <h1 >Lista de usuarios</h1>
              </ion-label>
           </ion-item>
@@ -76,10 +79,10 @@
       </div>
     </ion-content>
    
-    <ion-footer>
-      <ion-toolbar>
-        <ion-buttons slot="secondary">
-          <ion-button color="primary" @click="goTo('/folder/Usuario-edit')">
+    <ion-footer class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="secondary" class="bg-dark-green">
+          <ion-button color="secondary" class="bg-dark-green" @click="goTo('/folder/Usuario-edit')">
             Editar
           </ion-button>
         </ion-buttons>
@@ -143,26 +146,30 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(255, 255, 255);
-}
+
 
 ion-title {
-  color: #067a0c;
+  color: rgb(214, 248, 209);
   font-weight: 700;
 }
 
-#container a {
-  text-decoration: none;
-  background: rgb(166, 228, 157);
+ion-page{
+  background: rgb(214, 248, 209);
+  --background: rgb(214, 248, 209);
 }
-img{
+body{
+  background: rgb(214, 248, 209);
+  --background: rgb(214, 248, 209);
+}
+ion-app{
+  background: rgb(214, 248, 209);
+  --background: rgb(214, 248, 209);
+}
+background-content{
+  background: rgb(214, 248, 209);
+  --background: rgb(214, 248, 209);
+}
+.imgPerfil{
     width:300px;
     height:300px;
     border-radius:150px;

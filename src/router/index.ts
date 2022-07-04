@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 
 const checkSession = (to: any, from: any, next: any) => {
-  const session = Object.keys(sessionStorage).find((key) =>
-    key.includes("firebase:authUser:")
+  const session = Object.keys(localStorage).find((key) =>
+    key.includes("SESSION")
   );
   const isLogin = session ? true : false;
   if (to.path !== 'login' && !isLogin) next({ path: '/login' })
@@ -84,17 +84,20 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/folder/Menusemanal',
     component: () => import('../views/menusemanal.vue'),
-    meta: { title: 'Menu Semanal', showMenu: true }
+    meta: { title: 'Menu Semanal', showMenu: true },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Menusemanal/:day',
     component: () => import('../views/menudiario.vue'),
-    meta: { title: 'Menu Diario', showMenu: true }
+    meta: { title: 'Menu Diario', showMenu: true },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Menusemanal/:day/recetas',
     component: () => import('../views/menudiariorecetas.vue'),
-    meta: { title: 'Menu Diario Recetas', showMenu: true }
+    meta: { title: 'Menu Diario Recetas', showMenu: true },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Ajustes',
@@ -102,7 +105,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Ajustes',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/registro',
@@ -110,7 +114,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Registro',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/folder/Ayuda',
@@ -118,15 +123,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Ayuda',
       showMenu: true
-    }
-  },
-  {
-    path: '/SubViews/RPropias',
-    component: () => import('../views/SubViews/RPropias.vue'),
-    meta: {
-      title: 'Recetas propias',
-      showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/RBeFit',
@@ -136,7 +134,8 @@ const routes: Array<RouteRecordRaw> = [
       showMenu: true,
       isUser: false,
       url: 'RBeFit'
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/RBeFit/:id',
@@ -145,7 +144,8 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Detalle',
       showMenu: true,
       isUser: false
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/RPublicas/:id',
@@ -154,7 +154,8 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Detalle',
       showMenu: true,
       isUser: false
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/RUsuario/:id',
@@ -163,41 +164,65 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Detalle',
       showMenu: true,
       isUser: false
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/RUsuario',
-    component: () => import('../views/SubViews/RBeFit.vue'),
+    component: () => import('../views/SubViews/RUsuario.vue'),
     meta: {
       title: 'Recetas del usuario',
       showMenu: true,
       isUser: true,
       url: 'RUsuario'
-    }
+    },
+    beforeEnter: checkSession,
   },
+  // {
+  //   path: '/SubViews/Usuario',
+  //   component: () => import('../views/SubViews/RUsuario.vue'),
+  //   meta: {
+  //     title: 'Crear Recetas del usuario',
+  //     showMenu: true
+  //   },
+  //   beforeEnter: checkSession,
+  // },
+  
   {
     path: '/SubViews/crear-RUsuario',
-    component: () => import('../views/SubViews/RUsuario.vue'),
+    component: () => import('../views/SubViews/crear-RUsuario.vue'),
     meta: {
       title: 'Crear Recetas del usuario',
-      showMenu: true
+      showMenu: true,
+      beforeEnter: checkSession
     }
-  },
-  {
+  },  {
     path: '/SubViews/crear-RPublicas',
     component: () => import('../views/SubViews/crear-RPublicas.vue'),
     meta: {
       title: 'Crear Recetas públicas',
-      showMenu: true
+      showMenu: true,
+      beforeEnter: checkSession,
     }
   },
+  {
+    path: '/SubViews/RBeFit',
+    component: () => import('../views/SubViews/crear-RBeFit.vue'),
+    meta: {
+      title: 'Crear Recetas BeFit',
+      showMenu: true
+    },
+    beforeEnter: checkSession,
+  },
+  
   {
     path: '/SubViews/crear-RBeFit',
     component: () => import('../views/SubViews/crear-RBeFit.vue'),
     meta: {
       title: 'Crear Recetas BeFit',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/editar-RBeFit/:id',
@@ -205,7 +230,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Editar Recetas BeFit',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/RUsuario/:id',
@@ -214,39 +240,8 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Detalle',
       showMenu: true,
       isUser: true
-    }
-  },
-  {
-    path: '/SubViews/progresoDia',
-    component: () => import('../views/SubViews/progresoDia.vue'),
-    meta: {
-      title: 'Progreso diario',
-      showMenu: true
-    }
-  },
-  {
-    path: '/SubViews/listDias',
-    component: () => import('../views/SubViews/listDias.vue'),
-    meta: {
-      title: 'Semana',
-      showMenu: true
-    }
-  },
-  {
-    path: '/SubViews/listalimentos',
-    component: () => import('../views/SubViews/listalimentos.vue'),
-    meta: {
-      title: 'Alimentos',
-      showMenu: true
-    }
-  },
-  {
-    path: '/SubViews/explicaReceta',
-    component: () => import('../views/SubViews/explicaReceta.vue'),
-    meta: {
-      title: 'Descripción de receta',
-      showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/comidasDia',
@@ -255,7 +250,8 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Alimentación diaria',
       showMenu: true,
       url: 'RUsuario'
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/comidasDiaP',
@@ -264,7 +260,8 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Recetas Públicas',
       showMenu: true,
       url: 'RPublicas'
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/RPublicas',
@@ -273,7 +270,8 @@ const routes: Array<RouteRecordRaw> = [
       title: 'Recetas Públicas',
       showMenu: true,
       url: 'RPublicas'
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/listaUser',
@@ -281,7 +279,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Lista de usuarios',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/addDeporte',
@@ -289,7 +288,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Añadir deporte',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/addDeporteList',
@@ -297,7 +297,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Añadir nuevo deporte',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/editDeporteList/:id',
@@ -305,7 +306,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Editar nuevo deporte',
       showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
   {
     path: '/SubViews/userListEdit/:id',
@@ -313,15 +315,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Editar usuario',
       showMenu: true
-    }
-  },
-  {
-    path: '/SubViews/recetAli',
-    component: () => import('../views/SubViews/recetAli.vue'),
-    meta: {
-      title: '',
-      showMenu: true
-    }
+    },
+    beforeEnter: checkSession,
   },
 ]
 

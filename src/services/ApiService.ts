@@ -19,6 +19,16 @@ class ApiService {
                 }
             });
     }
+    start() {
+        db
+    }
+    // USER FUNCTIONS
+    updateUser(key: any, body: any) {
+        return update(ref(db, `/user/${key}/`), body);
+    } 
+    postUser(idUser: any, body: any) {
+        return set(ref(db, `/user/${idUser}/`), body);
+    }
     getIsAdmin(idUser: any) {
         const dbRef = ref(getDatabase());
         return get(child(dbRef, `user/${idUser}`))
@@ -51,6 +61,23 @@ class ApiService {
         //     console.error(error);
         // });
     }
+    deleteUser(key: any) {
+        return remove(ref(db, `/user/${key}/`));
+    }
+    postPeso(idUser: any, body: number[]) {
+        set(ref(db, `/user/${idUser}/currentWeight`), body[body.length - 1]);
+        return set(ref(db, `/user/${idUser}/weights/`), body);
+    }
+
+    //BEFIT FUNTCIONS
+    createRecipeBeFit(body: any) {
+        return update(ref(db, `/recipes/${body.id}`), body);
+    }
+    deleteRBeFit(id: string) {
+        return remove(ref(db, `/recipes/${id}`));
+    }
+
+    //RecipeU FUNCTIONS 
     getRecipesUser(idUser: any) {
         const dbRef = ref(getDatabase());
         return get(child(dbRef, `recipesU/${idUser}`))
@@ -64,64 +91,25 @@ class ApiService {
                 }
             });
     }
-    postExample(body: any) {
-        return set(ref(db, '/example/'), body);
+    
+    
+    updateRecipeU(key: any,uid: any, body: any) {
+        return update(ref(db, `/recipesU/${uid}/${key}/`), body);
     }
-    postUser(idUser: any, body: any) {
-        return set(ref(db, `/user/${idUser}/`), body);
+
+    setRecipeU(key: any, body: any) {
+        return set(ref(db, `/recipesU/${key}/`), body);
     }
-    postPeso(idUser: any, body: number[]) {
-        set(ref(db, `/user/${idUser}/currentWeight`), body[body.length - 1]);
-        return set(ref(db, `/user/${idUser}/weights/`), body);
-    }
-    postProgress(idUser: any, body: any) {
-        return set(ref(db, `/progress/${idUser}/`), body);
-    }
-    updateUser(key: any, body: any) {
-        return update(ref(db, `/user/${key}/`), body);
-    }
-    updateRecipe(idUser: any, key: any, body: any) {
-        return update(ref(db, `/recipesU/${idUser}/${key}/`), body);
-    }
-    createRecipeBeFit(body: any) {
-        return update(ref(db, `/recipes/${body.id}`), body);
-    }
+    //RecipeP FUNCTIONS
     updateRecipeP(key: any, body: any) {
         return update(ref(db, `/recipesP/${key}/`), body);
     }
-    deleteUser(key: any) {
-        return remove(ref(db, `/user/${key}/`));
-    }
-    start() {
-        db
-    }
-    postSportList(body: any) {
-        const id = new Date().getTime();
-        return set(ref(db, '/sportList/' + id), { ...body, id });
-    }
-    updateSportList(key: any, body: any) {
-        return update(ref(db, `/sportList/${key}/`), body);
-    }
-
-    postSport(uid: string, body: any) {
-        const date = new Date().getTime();
-        return set(ref(db, '/sport/' + uid + '/' + date), { ...body, date });
-    }
-
     
-    getSport(uid: string) {
-        const dbRef = ref(getDatabase());
-        return get(child(dbRef, `sport/${uid}`))
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    console.log(snapshot.val());
-                    return snapshot.val();
-                } else {
-                    console.log("No data available");
-                    return false;
-                }
-            });
+    
+    postProgress(idUser: any, body: any) {
+        return set(ref(db, `/progress/${idUser}/`), body);
     }
+   
     // =========== RECETAS DIARIAS DE USUARIO
     postRDU(uid: string, day: any, body: any) {
         const date = new Date().getTime();
@@ -162,11 +150,40 @@ class ApiService {
     deleteRDU(uid: string, day: any) {
         return remove(ref(db, `/recipesDayUser/${uid}/${day}`));
     }
-    deleteRBeFit(id: string) {
-        return remove(ref(db, `/recipes/${id}`));
+    
+   
+
+    //SPORTSLIST FUNCTIONS
+    postSportList(body: any) {
+        const id = new Date().getTime();
+        return set(ref(db, '/sportList/' + id), { ...body, id });
     }
+    updateSportList(key: any, body: any) {
+        return update(ref(db, `/sportList/${key}/`), body);
+    }
+
     deleteSport(id: string) {
         return remove(ref(db, `/sportList/${id}`));
+    }
+ //SPORT FUNCTIONS
+    postSport(uid: string, body: any) {
+        const date = new Date().getTime();
+        return set(ref(db, '/sport/' + uid + '/' + date), { ...body, date });
+    }
+
+   
+    getSport(uid: string) {
+        const dbRef = ref(getDatabase());
+        return get(child(dbRef, `sport/${uid}`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    console.log(snapshot.val());
+                    return snapshot.val();
+                } else {
+                    console.log("No data available");
+                    return false;
+                }
+            });
     }
 
     uploadFile(event: any) {

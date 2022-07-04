@@ -1,11 +1,14 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
+    <ion-header :translucent="true" class="bg-dark-green">
+      <ion-toolbar class="bg-dark-green">
+        <ion-buttons slot="start" class="bg-dark-green">
+          <ion-menu-button color="secondary" class="bg-dark-green"></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ $route.meta.title }} </ion-title>
+        <ion-buttons slot="end" class="bg-dark-green">
+           <img src="assets/logofondoverde.png" height="60" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -18,12 +21,12 @@
       <div expand="full" id="container">
         <ion-list>
           <ion-item>
-            <ion-label> <img :src="recipe.image" /></ion-label>
+            <ion-label> <img class="imgCard" :src="recipe.image" /></ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
               <ion-label>
-                <h1>Foto</h1>
+                <h1 class="bg-green">Foto</h1>
               </ion-label>
               <input
                 type="file"
@@ -33,15 +36,15 @@
               />
             </ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label position="floating">Nombre</ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green" position="floating">Nombre</ion-label>
             <ion-input v-model="recipe.nombre"></ion-input>
           </ion-item>
-          <ion-item>
-            <ion-label position="floating">Kg/Cal</ion-label>
+          <ion-item class="bg-green">
+            <ion-label class="bg-green" position="floating">Kg/Cal</ion-label>
             <ion-input v-model="recipe.kgcal"></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item class="bg-green">
             <ion-label position="floating">Tiempo</ion-label>
             <ion-input v-model="recipe.tiempo"></ion-input>
           </ion-item>
@@ -57,7 +60,7 @@
           <ion-item v-for="(step, index) in steps" lines="none" :key="index">
             <ion-label position="floating">Paso {{ index + 1 }} </ion-label>
             <ion-textarea v-model="step.descripcion"></ion-textarea>
-            <img :src="step.image" />
+            <img class="imgCard" :src="step.image" />
             <input type="file" name="image" id="image" @change="upload($event, index)" />
             <ion-button slot="end" @click="removeStep(index)"> Borrar </ion-button>
           </ion-item>
@@ -123,7 +126,7 @@ export default defineComponent({
           }
         })
         .catch(() => {
-         
+         console.log("")
         });
     },
     crear() {
@@ -140,7 +143,7 @@ export default defineComponent({
         image: recipe.value.image,
         steps: steps.value,
       }).then((response) => {
-        
+        console.log("")
       });
     },
   },
@@ -148,39 +151,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgb(166, 228, 157);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-  background: rgb(166, 228, 157);
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  background: rgb(166, 228, 157);
-  margin: 0;
-}
 ion-title {
-  color: #067a0c;
+  color: rgb(214, 248, 209);
   font-weight: 700;
 }
-
-#container a {
-  text-decoration: none;
-  background: rgb(166, 228, 157);
+.imgCard {
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
-
 input {
   background-color: #067a0c;
   color: #fff;
@@ -194,5 +175,9 @@ input {
   position: relative;
   text-align: center;
   width: 400px;
+}
+ion-title {
+  color: rgb(214, 248, 209);
+  font-weight: 700;
 }
 </style>
