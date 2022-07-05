@@ -63,6 +63,9 @@ export default defineComponent({
     };
   },
   methods: {
+
+
+    
     loginG() {
       const provider = new GoogleAuthProvider();
       //Validate fields

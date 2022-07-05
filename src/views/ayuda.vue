@@ -23,7 +23,7 @@
               <h1 class="bg-green">Contacta con nosotros:</h1>
               <h2 class="bg-green">antoniocarrasco@usal.es</h2>
               <h2 class="bg-green">+34 676120498</h2>
-              <button class="bg-green" color="secondary" href="assets/maqueta anexo ii tfg.pdf" download="Guía de usuario BeFit"> Descargar guia de usuario</button>
+              <button class="bg-green" color="secondary" href="assets/Guia de usuario.pdf" download="Guía de usuario BeFit"> Descargar guia de usuario</button>
               
             </ion-label>
       </div>

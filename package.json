@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "@capacitor/app": "1.0.5",
@@ -42,6 +43,7 @@
     "@vue/test-utils": "^2.0.0-0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
+    "jsdoc": "^3.6.10",
     "typescript": "^4.3.5",
     "vue-jest": "^5.0.0-0"
   },

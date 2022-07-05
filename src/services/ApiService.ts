@@ -6,7 +6,11 @@ import { getDatabase } from "firebase/database";
 const db = getDatabase(app);
 
 class ApiService {
-    get(url: string) {
+
+get(url: string) {
+
+
+
         const dbRef = ref(getDatabase());
         return get(child(dbRef, url))
             .then((snapshot) => {
@@ -105,10 +109,6 @@ class ApiService {
         return update(ref(db, `/recipesP/${key}/`), body);
     }
     
-    
-    postProgress(idUser: any, body: any) {
-        return set(ref(db, `/progress/${idUser}/`), body);
-    }
    
     // =========== RECETAS DIARIAS DE USUARIO
     postRDU(uid: string, day: any, body: any) {
